@@ -12,8 +12,8 @@ t = 0
 dt = 0.01
 real_dt = dt
 
-scene = canvas(width=1520, height=700)
-scene.title= 'ISS Orbit'
+scene = canvas(width=1520, height=650)
+scene.append_to_title('ISS Orbit')
 lbl = label(pos=vector(-4.5,0,0),text='Time = 0',box=False)
 
 #Earth
@@ -49,9 +49,10 @@ def increment_speed(evt):
         print('pressed!')
 
 
-inc_speed = button(bind=increment_speed,text='Increase Time',pos=scene.title_anchor)
-real_speed = button(bind=increment_speed,text='Real Time',pos=scene.title_anchor)
-dec_speed = button(bind=increment_speed,text='Decrease Time',pos=scene.title_anchor)
+
+dec_speed = button(bind=increment_speed,text='Decrease Time',pos=scene.caption_anchor)
+real_speed = button(bind=increment_speed,text='Real Time',pos=scene.caption_anchor)
+inc_speed = button(bind=increment_speed,text='Increase Time',pos=scene.caption_anchor)
 
 
 while t < 1000:
