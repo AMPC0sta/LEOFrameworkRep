@@ -10,8 +10,10 @@ tilt = 23.5*pi/180
 lat = 30*pi/180
 t = 0
 dt = 0.01
+real_dt = dt
 
-scene = canvas(title="ISS Orbit", width=1520, height=700)
+scene = canvas(width=1520, height=700)
+scene.title= 'ISS Orbit'
 lbl = label(pos=vector(-4.5,0,0),text='Time = 0',box=False)
 
 #Earth
@@ -32,6 +34,26 @@ ball.rotate(origin=earth_center,axis=vector(0,0,1),angle=tilt)
 #vectorial angular velocity
 w = 1*norm(npole.axis)
 
+
+# buttons
+def increment_speed(evt):
+    global dt
+    if evt.text == 'Increase Time':
+        dt = 1.1 * dt
+        print('pressed!')
+    if evt.text == 'Decrease Time':
+        dt = 0.9 * dt
+        print('pressed!')
+    if evt.text == 'Real Time':
+        dt = real_dt
+        print('pressed!')
+
+
+inc_speed = button(bind=increment_speed,text='Increase Time',pos=scene.title_anchor)
+real_speed = button(bind=increment_speed,text='Real Time',pos=scene.title_anchor)
+dec_speed = button(bind=increment_speed,text='Decrease Time',pos=scene.title_anchor)
+
+
 while t < 1000:
     rate(30)
     earth.rotate(origin=earth_center,axis=w,angle=mag(w)*dt)
@@ -40,6 +62,6 @@ while t < 1000:
     ball.v = w.cross(ball.pos)
     ball.pos = ball.pos + ball.v * dt
     t = t + dt
-    lbl.text='Time = '+str(t)
+    lbl.text='Time = '+str(t)+' dt = '+str(dt)
 
 
