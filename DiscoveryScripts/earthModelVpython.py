@@ -13,6 +13,7 @@ dt = 0.01
 real_dt = dt
 
 scene = canvas(width=1520, height=650)
+
 scene.append_to_title('ISS Orbit')
 lbl = label(pos=vector(-4.5,0,0),text='Time = 0',box=False)
 
