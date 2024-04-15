@@ -1,8 +1,15 @@
 from vpython import *
-from numpy import *
+from numpy import * 
 
 w=1320
 h=650
+axis = False
+
+# VPython axis orientation
+arrow_scalar = 2
+x_vector = vector(arrow_scalar,0,0)
+y_vector = vector(0,arrow_scalar,0)
+z_vector = vector(0,0,arrow_scalar)
 
 screen = canvas(width=(w*4/5)-50,height=h,align='left',title='Orbit Visualizer')
 
@@ -30,13 +37,38 @@ def increment_speed(evt):
         print('pressed!')
 
 def manage_axises(evt):
-    global axis 
     if evt.checked:
         axis = True
+        print ('dbg 1')
     else:
         axis = False
 
+x_axis = arrow(center=vector(0,0,0),axis=vector(2,0,0),color=color.green,shaftwidth=0.01,round=True,visible=True)
+x_lbl = label(pos=vector(2,0,0),text='X',color=color.green,box=False)
+x_axis.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
+x_lbl.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
+
+y_axis = arrow(center=vector(0,0,0),axis=vector(0,2,0),color=color.red,shaftwidth=0.01,round=True,visible=True)
+y_lbl = label(pos=vector(0,2,0),text='Y',color=color.red,box=False)
+y_axis.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
+y_lbl.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
+y_axis.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
+y_lbl.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
+
+z_axis = arrow(center=vector(0,0,0),axis=vector(0,0,2),color=color.orange,shaftwidth=0.01,round=True,visible=True)
+z_lbl = label(pos=vector(0,0,2),text='Z',color=color.orange,box=False)
+z_axis.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
+z_lbl.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
+
+
+#if axis == True:
+#    x_axis.visible = True
+#    print ('dbg 3')
+#else:
+#    x_axis.visible = False
+    
 my_box = box(pos=vector(0,0,0), size=vector(1,1,1), color=color.red,canvas=screen)
+
 
 screen.append_to_caption('Screen Size ')
 menu(choices=['1320x650' ,'760x325'], bind=screen_size,pos=screen.caption_anchor)
@@ -52,7 +84,10 @@ real_speed = button(bind=increment_speed,text='Real Time', pos=screen.caption_an
 inc_speed = button(bind=increment_speed,text='Increase Time',pos=screen.caption_anchor,background=color.blue)
 
 
-
-
 while True:
+    #if axis == True:
+    #    x_axis.visible = True
+    #    print ('dbg 3')
+    #else:
+    #    x_axis.visible = False
     pass
