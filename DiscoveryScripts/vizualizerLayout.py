@@ -38,10 +38,19 @@ def increment_speed(evt):
 
 def manage_axises(evt):
     if evt.checked:
-        axis = True
-        print ('dbg 1')
+        x_axis.visible = True
+        x_lbl.visible = True
+        y_axis.visible = True
+        y_lbl.visible = True
+        z_axis.visible = True
+        z_lbl.visible = True
     else:
-        axis = False
+        x_axis.visible = False
+        x_lbl.visible = False
+        y_axis.visible = False
+        y_lbl.visible = False
+        z_axis.visible = False
+        z_lbl.visible = False
 
 x_axis = arrow(center=vector(0,0,0),axis=vector(2,0,0),color=color.green,shaftwidth=0.01,round=True,visible=True)
 x_lbl = label(pos=vector(2,0,0),text='X',color=color.green,box=False)
@@ -55,17 +64,10 @@ y_lbl.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
 y_axis.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
 y_lbl.rotate(origin=vector(0,0,0),axis=y_vector,angle=-pi/2)
 
-z_axis = arrow(center=vector(0,0,0),axis=vector(0,0,2),color=color.orange,shaftwidth=0.01,round=True,visible=True)
-z_lbl = label(pos=vector(0,0,2),text='Z',color=color.orange,box=False)
+z_axis = arrow(center=vector(0,0,0),axis=vector(0,0,2),color=color.blue,shaftwidth=0.01,round=True,visible=True)
+z_lbl = label(pos=vector(0,0,2),text='Z',color=color.blue,box=False)
 z_axis.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
 z_lbl.rotate(origin=vector(0,0,0),axis=x_vector,angle=-pi/2)
-
-
-#if axis == True:
-#    x_axis.visible = True
-#    print ('dbg 3')
-#else:
-#    x_axis.visible = False
     
 my_box = box(pos=vector(0,0,0), size=vector(1,1,1), color=color.red,canvas=screen)
 
@@ -75,7 +77,7 @@ menu(choices=['1320x650' ,'760x325'], bind=screen_size,pos=screen.caption_anchor
 
     
 screen.append_to_caption('\n\n\n')
-chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=False)
+chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
 
 screen.append_to_caption('\n\n\n')
 screen.append_to_caption('Change animation speed!\n')
@@ -85,9 +87,4 @@ inc_speed = button(bind=increment_speed,text='Increase Time',pos=screen.caption_
 
 
 while True:
-    #if axis == True:
-    #    x_axis.visible = True
-    #    print ('dbg 3')
-    #else:
-    #    x_axis.visible = False
     pass
