@@ -8,3 +8,4 @@ DiscoveryScripts  --> Folder with learnings (on coding learns)
   layoutCanvas.py           -- How to manage multiple canvas with vpython
   visualizerLayout.py       -- Mockup for the final orbit visualizer
 
+Images            --> Folder with the resultant images.
