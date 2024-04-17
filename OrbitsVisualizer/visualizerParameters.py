@@ -21,3 +21,4 @@ class VisualizerParameters:
         else
             self.e_center = e_center
             
+            
