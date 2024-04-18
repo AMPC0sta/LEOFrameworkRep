@@ -30,16 +30,20 @@ class CoordinateSystem:
             self.visible = visible
             
         self.x_axis = arrow(center=self.center,axis=vector(self.lenght,0,0),color=CoordinateSystem.axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=self.visible)
-        self.x_lbl = label(pos=vector(self.lenght,0,0),text='X',color=CoordinateSystem.axis_color=False)
+        self.x_lbl = label(pos=vector(self.lenght,0,0),text='X',color=CoordinateSystem.axis_color,box=False)
 
         self.y_axis = arrow(center=self.center,axis=vector(0,self.lenght,0),color=CoordinateSystem.axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=self.visible)
-        self.y_lbl = label(pos=vector(0,self.lenght,0),text='Y',color=CoordinateSystem.axis_color=False)
+        self.y_lbl = label(pos=vector(0,self.lenght,0),text='Y',color=CoordinateSystem.axis_color,box=False)
 
         self.z_axis = arrow(center=self.center,axis=vector(0,0,self.lenght),color=CoordinateSystem.axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=self.visible)
-        self.z_lbl = label(pos=vector(0,0,self.lenght),text='Z',color=CoordinateSystem.axis_color=False)
+        self.z_lbl = label(pos=vector(0,0,self.lenght),text='Z',color=CoordinateSystem.axis_color,box=False)
 
+        
+        
         def get_space_axis(): 
             return (self.x_axis, self.y_axis, self.z_axis)
+        
+        
         
         def get_space_axis_labels():
             return (self.x_lbl,self.y_lbl,self.z_lbl)
