@@ -37,3 +37,12 @@ class CoordinateSystem:
 
         self.z_axis = arrow(center=self.center,axis=vector(0,0,self.lenght),color=CoordinateSystem.axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=self.visible)
         self.z_lbl = label(pos=vector(0,0,self.lenght),text='Z',color=CoordinateSystem.axis_color=False)
+
+        def get_space_axis(): 
+            return (self.x_axis, self.y_axis, self.z_axis)
+        
+        def get_space_axis_labels():
+            return (self.x_lbl,self.y_lbl,self.z_lbl)
+        
+        
+        
