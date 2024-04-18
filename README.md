@@ -13,6 +13,7 @@ DiscoveryScripts  --> Folder with the documented learning process (while coding)
 Orbits Visualizer  --> Folder with the orbits visualizer developments
   startVisualizer.py        -- Starter
   visualizerParameters.py   -- Object definition to hold/manage parameters
-  
+  coordinateSystem.py       -- Holds design, maths and visual for coordinate systems
+
 Images            --> Folder with the resultant images.
 
