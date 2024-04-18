@@ -18,6 +18,6 @@ class VisualizerParameters:
             
         if e_center == None:
             self.e_center = vector(0,0,0)
-        else
+        else:
             self.e_center = e_center
             
