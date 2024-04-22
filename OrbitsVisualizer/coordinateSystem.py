@@ -6,55 +6,12 @@ class CoordinateSystem:
     axis_shaft = 10
     
 
-    def __init__(self,*args):
-        
-        if len(args)==4:
-            type = args[0]
-            lenght = args[1]
-            angle = args[2]
-            visible = args[3]
-        elif len(args)==3:
-            type = args[0]
-            lenght = args[1]
-            angle = args[2]
-            visible = None
-        elif len(args)==2:
-            type = args[0]
-            lenght = args[1]
-            angle = None
-            visible = None
-        elif len(args)==1:
-            type = args[0]
-            lenght = None
-            angle = None
-            visible = None
-        else:
-            type = None
-            lenght = None
-            angle = None
-            visible = None
-        
-        if type == None:
-            self.type = 'ecef'
-        else:
-            self.type = type
-            
-        self.center = vector(0,0,0)
-        
-        if lenght == None:
-            self.lenght = 1
-        else:
-            self.lenght = lenght*1.5
-        
-        if angle == None:
-            self.angle = 0
-        else:
-            self.angle = angle
-        
-        if visible == None:
-            self.visible = True
-        else:
-            self.visible = visible
+    def __init__(self,type='ecef',center=vector(0,0,0),lenght=1,angle=0,visible=True):
+    
+        self.type = type
+        self.center = center
+        self.lenght = lenght *1.5
+        self.angle = angle
             
         self.x_axis = arrow(center=self.center,axis=vector(self.lenght,0,0),color=CoordinateSystem.axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=True)
         self.x_lbl = label(pos=vector(self.lenght,0,0),text='X',color=CoordinateSystem.axis_color,box=False)

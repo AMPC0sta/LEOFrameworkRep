@@ -8,9 +8,9 @@ width=1320
 height=650
 main_title = 'Orbit Visualizer'
 
-parameters = VisualizerParameters()
+parameters = VisualizerParameters(7000)
 screen = canvas(width=(width*4/5)-50,height=height,align='left',title=main_title)
-coords = CoordinateSystem(None,parameters.e_radius)
+coords = CoordinateSystem(None,None,parameters.e_radius)
 
 
 
