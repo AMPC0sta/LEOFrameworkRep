@@ -14,6 +14,7 @@ Orbits Visualizer  --> Folder with the orbits visualizer developments
   startVisualizer.py        -- Starter
   visualizerParameters.py   -- Object definition to hold/manage parameters
   coordinateSystem.py       -- Holds design, maths and visual for coordinate systems
+  earthMode..py             -- Where Earth "design" is coded
 
 Images            --> Folder with the resultant images.
 
