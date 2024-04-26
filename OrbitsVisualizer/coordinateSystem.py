@@ -18,6 +18,10 @@ class CoordinateSystem:
         self.y_vector = 1.5 * vector(0,self.lenght,0)
         self.z_vector = 1.5 * vector(0,0,self.lenght)
         
+        self.rot_axis_x = vector(1,0,0)
+        self.rot_axis_y = vector(0,1,0)
+        self.rot_axis_z = vector(0,0,1)
+        
         self.x_axis = arrow(center=self.center,axis=self.x_vector,color=CoordinateSystem.x_axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True,visible=True)
         self.x_lbl = label(pos=self.x_vector,text='X',color=CoordinateSystem.x_axis_color,box=False)
 
@@ -26,21 +30,7 @@ class CoordinateSystem:
 
         self.z_axis = arrow(center=self.center,axis=self.z_vector,color=CoordinateSystem.z_axis_color,shaftwidth=CoordinateSystem.axis_shaft,round=True)
         self.z_lbl = label(pos=self.z_vector,text='Z',color=CoordinateSystem.z_axis_color,box=False)
-        
-    def c_rotate(self,angle):
-        self.angle = angle * pi/180
-        self.x_axis.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        self.x_lbl.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-            
-        self.y_axis.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-        self.y_lbl.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-        self.y_axis.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        self.y_lbl.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-            
-        self.z_axis.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-        self.z_lbl.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-
-    
+           
         def get_space_axis(): 
             return (self.x_axis, self.y_axis, self.z_axis)
         
@@ -50,15 +40,14 @@ class CoordinateSystem:
         
         
     def transform_from_vpython_to_ecef(self):
-        self.angle = -pi/2
-        #self.x_axis.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        #self.x_lbl.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
+        self.angle = pi/2
+
+        self.x_axis.rotate(origin=self.center,axis=self.rot_axis_y,angle=self.angle)
+        self.x_lbl.rotate(origin=self.center,axis=self.rot_axis_y,angle=self.angle)
+
+        self.y_axis.rotate(origin=self.center,axis=self.rot_axis_z,angle=-1*self.angle)
+        self.y_lbl.rotate(origin=self.center,axis=self.rot_axis_z,angle=-1*self.angle)
+
+        self.z_axis.rotate(origin=self.center,axis=self.rot_axis_x,angle=-1*self.angle)
+        self.z_lbl.rotate(origin=self.center,axis=self.rot_axis_x,angle=-1*self.angle)
             
-        #self.x_axis.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        #self.x_lbl.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        #self.z_axis.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-        #self.z_lbl.rotate(origin=self.center,axis=self.y_vector,angle=self.angle)
-            
-        #self.z_axis.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-        #self.z_lbl.rotate(origin=self.center,axis=self.x_vector,angle=self.angle)
-    

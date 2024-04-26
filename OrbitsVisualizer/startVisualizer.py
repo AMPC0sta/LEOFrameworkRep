@@ -12,7 +12,7 @@ parameters = VisualizerParameters()
 screen = canvas(width=(width*4/5)-50,height=height,align='left',title=main_title)
 l = parameters.e_radius
 print(l)
-c = CoordinateSystem(None,None,l)
+c = CoordinateSystem(lenght=l)
 print(c.angle)
 c.transform_from_vpython_to_ecef()
 
