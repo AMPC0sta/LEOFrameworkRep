@@ -15,9 +15,9 @@ class CoordinateSystem:
         self.angle = angle * pi/180
         self.screen = screen
         
-        self.x_vector = 1.5 * vector(self.lenght,0,0)
-        self.y_vector = 1.5 * vector(0,self.lenght,0)
-        self.z_vector = 1.5 * vector(0,0,self.lenght)
+        self.x_vector = 1.3 * vector(self.lenght,0,0)
+        self.y_vector = 1.3 * vector(0,self.lenght,0)
+        self.z_vector = 1.3 * vector(0,0,self.lenght)
         
         self.rot_axis_x = vector(1,0,0)
         self.rot_axis_y = vector(0,1,0)
@@ -54,8 +54,8 @@ class CoordinateSystem:
     def transform_from_vpython_to_ecef(self):
         self.angle = pi/2
 
-        self.x_axis.rotate(origin=self.center,axis=self.rot_axis_y,angle=self.angle)
-        self.x_lbl.rotate(origin=self.center,axis=self.rot_axis_y,angle=self.angle)
+        self.x_axis.rotate(origin=self.center,axis=self.rot_axis_y,angle=-1*self.angle)
+        self.x_lbl.rotate(origin=self.center,axis=self.rot_axis_y,angle=-1*self.angle)
 
         self.y_axis.rotate(origin=self.center,axis=self.rot_axis_z,angle=-1*self.angle)
         self.y_lbl.rotate(origin=self.center,axis=self.rot_axis_z,angle=-1*self.angle)
