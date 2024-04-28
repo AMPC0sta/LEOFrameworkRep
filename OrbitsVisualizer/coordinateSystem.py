@@ -62,4 +62,14 @@ class CoordinateSystem:
 
         self.z_axis.rotate(origin=self.center,axis=self.rot_axis_x,angle=-1*self.angle)
         self.z_lbl.rotate(origin=self.center,axis=self.rot_axis_x,angle=-1*self.angle)
-            
+        
+        
+    def inclination(self,angle):
+        self.angle = angle
+        
+        self.z_axis.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
+        self.z_lbl.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
+
+        self.y_axis.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
+        self.y_lbl.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
+

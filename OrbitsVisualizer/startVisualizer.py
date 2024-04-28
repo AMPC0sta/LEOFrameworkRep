@@ -29,6 +29,7 @@ def manage_tilt(event):
 c.transform_from_vpython_to_ecef()
 earth = EarthModel(canvas=screen,radius=l)
 earth.inclination(23.5 * pi/180)
+c.inclination(angle=23.5 * pi/180)
 
 chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
 screen.append_to_caption('\n\nSlide to obtain inclination angle.\n')
