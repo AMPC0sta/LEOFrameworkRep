@@ -8,6 +8,13 @@ How to run?
   These scripts are being executed in an environment configured through Anaconda, and being coded with Visual Studio Code IDE, with python extensions.
   However it can be executed in different environment as long, as it has python 3 interpreter and the listed libraries.
 
+
+How to use?
+  On browser tab that is opened when script is executed, explore the available controls. 
+  Mouse scrool wheel will zoom in and out objects.
+  Mouse right button will allow to change the camera viewing position
+
+
 DiscoveryScripts  --> Folder with the documented learning process (while coding)
   earthModelVpython.py      -- Testing script, how to code an earth model for satellite orbiting with VPyton.  
   layoutCanvas.py           -- How to manage multiple canvas with vpython

@@ -15,3 +15,5 @@ class EarthModel:
     def inclination(self,angle):
         self.tilt = angle
         self.earth.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)     #Drawing earth inclination over Z axis
+        
+        

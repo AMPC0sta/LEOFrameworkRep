@@ -17,8 +17,15 @@ c = CoordinateSystem(lenght=l,screen=screen)
 def manage_axises(event):
     if event.checked:
         c.visibility(True)
+        chk_poles.checked = False
     else:
         c.visibility(False)
+        
+def manage_poles(event):
+        if event.checked:
+            chk_axises.checked = False
+            c.visibility(False)
+        
         
 def manage_tilt(event):
     global tilt
@@ -29,16 +36,21 @@ def manage_tilt(event):
         earth.inclination(angle=(tmp_tilt-tilt) * pi/180)
         c.inclination(angle=(tmp_tilt-tilt) * pi/180)
         tilt = tmp_tilt
-                
-
+        stext.text = str(event.value)+ " º"
+    
 c.transform_from_vpython_to_ecef()
 earth = EarthModel(canvas=screen,radius=l)
 earth.inclination(23.5 * pi/180)
 c.inclination(angle=23.5 * pi/180)
 
 chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
-screen.append_to_caption('\n\nSlide to obtain inclination angle.\n')
+screen.append_to_caption('\n')
+chk_poles = checkbox(text='Show North & South Poles',bind=manage_poles,pos=screen.caption_anchor,checked=False)
+
+screen.append_to_caption('\n\nSlide to obtain inclination angle: \n')
 tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,step=0.1,id='Tilt')
+stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen)
+
 
 while True:
     pass
