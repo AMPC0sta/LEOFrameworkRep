@@ -4,6 +4,10 @@ Running over an Anaconda environment with Python 3.11.8.
     numpy        = 1.26.4
     tk           = 8.6.12
 
+How to run?
+  These scripts are being executed in an environment configured through Anaconda, and being coded with Visual Studio Code IDE, with python extensions.
+  However it can be executed in different environment as long, as it has python 3 interpreter and the listed libraries.
+
 DiscoveryScripts  --> Folder with the documented learning process (while coding)
   earthModelVpython.py      -- Testing script, how to code an earth model for satellite orbiting with VPyton.  
   layoutCanvas.py           -- How to manage multiple canvas with vpython
