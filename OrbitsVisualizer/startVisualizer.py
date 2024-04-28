@@ -26,16 +26,20 @@ c = CoordinateSystem(lenght=l,screen=screen)
 def manage_axises(event):
     if event.checked:
         c.visibility(True)
-        chk_poles.checked = False
-        earth.poles_visibility(False)
+        
+        if chk_poles.checked:
+            chk_poles.checked = False
+            earth.poles_visibility(False)
     else:
         c.visibility(False)
         
 def manage_poles(event):
         if event.checked:
             chk_axises.checked = False
-            c.visibility(False)
-            earth.poles_visibility(True)
+            
+            if chk_axises.checked:
+                c.visibility(False)
+                earth.poles_visibility(False)
         else:
             earth.poles_visibility(False)
         
@@ -54,12 +58,16 @@ def manage_e_rotation(event):
     global e_rotation 
     e_rotation = event.checked
 
-    
+
+
+# Coordinates systems set and earth inclination    
 c.transform_from_vpython_to_ecef()
 earth = EarthModel(canvas=screen,radius=l)
 earth.inclination(23.5 * pi/180)
 c.inclination(angle=23.5 * pi/180)
 
+
+# Drawing interface controls
 screen.append_to_caption('Visualizer Controls\n________________________________________________________\n')
 chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
 screen.append_to_caption('\n')
@@ -75,6 +83,9 @@ screen.append_to_caption('\n\n__________________________________________________
 screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
 
+
+
+# Temporal buckets (to be changed to allig with UTC, and seasonal daylight)
 dt = 0.01 
 t = 0
 
@@ -84,9 +95,6 @@ while True:
     t = t  + dt
     if e_rotation == True:
         earth.earth_rotation(dt)
-        print(earth.npole.axis)
-    else:
-        print(earth.npole.axis)
 
     
 

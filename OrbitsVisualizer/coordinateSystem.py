@@ -50,6 +50,10 @@ class CoordinateSystem:
         self.z_axis.visible = self.state
         self.z_lbl.visible = self.state
 
+
+    def read_coordinates_visibility(self):
+        return self.state
+    
         
     def transform_from_vpython_to_ecef(self):
         self.angle = pi/2

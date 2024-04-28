@@ -32,11 +32,17 @@ class EarthModel:
         # Give poles the same tilt
         self.npole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
         self.spole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
+        
+        self.angular_velocity = 1*norm(self.npole.axis)
     
     
     def poles_visibility(self,status):
         self.npole.visible=status
         self.spole.visible=status
+        
+    
+    def read_poles_visibility(self):
+        return self.npole.visible
         
         
     def earth_rotation(self,rotation_dt):
