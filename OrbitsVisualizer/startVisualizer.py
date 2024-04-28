@@ -18,6 +18,7 @@ def manage_axises(event):
     if event.checked:
         c.visibility(True)
         chk_poles.checked = False
+        earth.poles_visibility(False)
     else:
         c.visibility(False)
         
@@ -25,6 +26,7 @@ def manage_poles(event):
         if event.checked:
             chk_axises.checked = False
             c.visibility(False)
+            earth.poles_visibility(True)
         
         
 def manage_tilt(event):
@@ -48,7 +50,7 @@ screen.append_to_caption('\n')
 chk_poles = checkbox(text='Show North & South Poles',bind=manage_poles,pos=screen.caption_anchor,checked=False)
 
 screen.append_to_caption('\n\nSlide to obtain inclination angle: \n')
-tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,step=0.1,id='Tilt')
+tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,value=23.5,step=0.1,id='Tilt')
 stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen)
 
 
