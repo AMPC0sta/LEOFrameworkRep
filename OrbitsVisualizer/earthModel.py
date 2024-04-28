@@ -9,6 +9,7 @@ class EarthModel:
         self.canvas = canvas
         self.tilt = 0
         
+        
         # Draw earth sphere, with world maps, and set lights from west
         self.earth=sphere(canvas=self.canvas,pos=self.earth_center,radius=self.radius,texture=textures.earth,shininess=0)
         self.canvas.lights=[]
@@ -18,7 +19,10 @@ class EarthModel:
         # Draw earth poles but leave them invsible
         self.npole = cylinder(pos=self.earth_center,axis=1.5*self.radius*vector(-sin(self.tilt),cos(self.tilt),0),radius=0.01*self.radius,visible=False)
         self.spole = cylinder(pos=self.earth_center,axis=-1.5*self.radius*vector(-sin(self.tilt),cos(self.tilt),0),radius=0.01*self.radius,visible=False)
-    
+        
+        self.angular_velocity = 1*norm(self.npole.axis)
+     
+     
     def inclination(self,angle):
         self.tilt = angle
         
@@ -29,6 +33,15 @@ class EarthModel:
         self.npole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
         self.spole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
     
+    
     def poles_visibility(self,status):
         self.npole.visible=status
         self.spole.visible=status
+        
+        
+    def earth_rotation(self,rotation_dt):
+        self.rotation_dt = rotation_dt
+        
+        # Velocity per dt will determine the rotation anomaly
+        self.earth.rotate(origin=self.earth_center,axis=self.angular_velocity,angle=mag(self.angular_velocity)*self.rotation_dt)
+        
