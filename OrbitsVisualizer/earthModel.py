@@ -12,6 +12,6 @@ class EarthModel:
         self.canvas.lights.append(distant_light(direction=vector(-1,0,0)))
         self.canvas.ambient=color.white*0.5
     
-    def inclination(self,tilt):
-        self.tilt = tilt
+    def inclination(self,angle):
+        self.tilt = angle
         self.earth.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)     #Drawing earth inclination over Z axis

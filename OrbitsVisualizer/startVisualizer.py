@@ -22,8 +22,13 @@ def manage_axises(event):
         
 def manage_tilt(event):
     global tilt
+    global tmp_tilt
     if event.id == 'Tilt':
-        tilt = event.value
+        tmp_tilt = event.value
+        
+        earth.inclination(angle=(tmp_tilt-tilt) * pi/180)
+        c.inclination(angle=(tmp_tilt-tilt) * pi/180)
+        tilt = tmp_tilt
                 
 
 c.transform_from_vpython_to_ecef()
@@ -33,9 +38,10 @@ c.inclination(angle=23.5 * pi/180)
 
 chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
 screen.append_to_caption('\n\nSlide to obtain inclination angle.\n')
-tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,step=0.1,value=tilt,id='Tilt')
+tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,step=0.1,id='Tilt')
 
 while True:
-    print(tilt)
     pass
+
+    
 
