@@ -26,20 +26,18 @@ c = CoordinateSystem(lenght=l,screen=screen)
 def manage_axises(event):
     if event.checked:
         c.visibility(True)
-        
-        if chk_poles.checked:
-            chk_poles.checked = False
-            earth.poles_visibility(False)
+        earth.poles_visibility(False)
+        chk_poles.checked = False
+            
     else:
         c.visibility(False)
         
 def manage_poles(event):
         if event.checked:
+            earth.poles_visibility(True)
+            c.visibility(False)
             chk_axises.checked = False
-            
-            if chk_axises.checked:
-                c.visibility(False)
-                earth.poles_visibility(False)
+
         else:
             earth.poles_visibility(False)
         
@@ -78,7 +76,7 @@ tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,value=23.5,step=0.1,id=
 stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen)
 
 screen.append_to_caption('\n\n')
-chk_poles = checkbox(text='Enable Earth rotation!',bind=manage_e_rotation,pos=screen.caption_anchor,checked=False)
+chk_rotation = checkbox(text='Enable Earth rotation!',bind=manage_e_rotation,pos=screen.caption_anchor,checked=False)
 screen.append_to_caption('\n\n________________________________________________________\n')
 screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
