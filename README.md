@@ -1,9 +1,9 @@
 Running over an Anaconda environment with Python 3.11.8:
   Libraries:
-    vpython      = 7.6.3
-    numpy        = 1.26.4
-    tk           = 8.6.12
-    pyorbital    = 1.8.2
+    - vpython      = 7.6.3
+    - numpy        = 1.26.4
+    - tk           = 8.6.12
+    - pyorbital    = 1.8.2
 
 Installations steps:
  1) Install Anaconda
