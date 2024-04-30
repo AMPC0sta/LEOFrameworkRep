@@ -1,11 +1,17 @@
+
 from vpython import *
 from numpy import *
 from datetime import *
 from time import *
+import sys
+
+# customized modules 
+sys.path.append("..")   # adding new import modules path
 
 from visualizerParameters import VisualizerParameters
 from coordinateSystem import *
 from earthModel import EarthModel
+from Common.celestrakObjects import *
 
 
 # Global main settings
@@ -25,6 +31,7 @@ day_secs = 24 * 60 * 60
 
 # Auxiliary variables
 e_rotation = False
+selected_satellite = None
 
 
 # Starting graphical objects
@@ -32,10 +39,12 @@ screen = canvas(width=(width*4/5)-50,height=height,align='left',title='<b>'+main
 parameters = VisualizerParameters()
 l = parameters.e_radius
 c = CoordinateSystem(lenght=l,screen=screen)
+# load available TLE objects on Celestrak website
+satellites_db = CelestrakObjects()
+
 
 
 # Interface control events/management
-
 def select_screen_size(m):
     global width, height
 
@@ -48,6 +57,13 @@ def select_screen_size(m):
     
     screen.width = (width * 4/5) - 50
     screen.height = height
+    
+    
+def manage_satellite(m):
+    global selected_satellite
+    
+    selected_satellite = m.selected
+    
 
 def manage_axises(event):
     if event.checked:
@@ -122,7 +138,11 @@ dec_speed = button(bind=manage_speed,text='Decrease Time',pos=screen.caption_anc
 real_speed = button(bind=manage_speed,text='Real Time',pos=screen.caption_anchor,canvas=screen)
 inc_speed = button(bind=manage_speed,text='Increase Time',pos=screen.caption_anchor,canvas=screen)
 
+screen.append_to_caption('\n\n<b>___________________ Load Orbits _____________________</b>\n')
+list = satellites_db.satellites_list
+menu_sat = menu(text="Load satellite orbit",choices=list,bind=manage_satellite,pos=screen.caption_anchor,canvas=screen)
 screen.append_to_caption('\n\n<b>____________________ Dashboard ______________________</b>\n')
+
 elapsed_text = wtext(text='Time elapsed = 0 sec',canvas=screen)
 screen.append_to_caption('\n')
 elapsed_angle_text = wtext(text='Earth rotation anomaly = 0 º',canvas=screen)
