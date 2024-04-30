@@ -1,18 +1,19 @@
-
 from vpython import *
 from numpy import *
 from datetime import *
 from time import *
 import sys
+import os
 
-# customized modules 
-sys.path.append("..")   # adding new import modules path
+# Move backwards on directory tree to allow to import custom modules from others folders
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
 
 from visualizerParameters import VisualizerParameters
 from coordinateSystem import *
 from earthModel import EarthModel
-from Common.celestrakObjects import *
-
+from Common.celestrakObjects import *   
 
 # Global main settings
 width=1320
