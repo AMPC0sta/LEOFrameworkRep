@@ -11,6 +11,9 @@ from earthModel import EarthModel
 # Global main settings
 width=1320
 height=650
+
+screen_sizes = ['1320x650','1800x850']
+
 main_title = 'Orbit Visualizer'
 tilt = 23.5
 
@@ -26,6 +29,20 @@ c = CoordinateSystem(lenght=l,screen=screen)
 
 
 # Interface control events/management
+
+def select_screen_size(m):
+    global width, height
+
+    if m.selected == screen_sizes[0]:
+        width = 1320
+        height = 650
+    if m.selected == screen_sizes[1]:
+        width = 1800
+        height = 850
+    
+    screen.width = (width * 4/5) - 50
+    screen.height = height
+
 def manage_axises(event):
     if event.checked:
         c.visibility(True)
@@ -69,14 +86,19 @@ c.inclination(angle=23.5 * pi/180)
 
 
 # Drawing interface controls
-screen.append_to_caption('Visualizer Controls\n________________________________________________________\n')
+screen.append_to_caption('Visualizer Controls\n_____________________ Graphic Interface ____________________\n')
+screen.append_to_caption('Screen Sizes')
+menu_sizes = menu(choices=screen_sizes,bind=select_screen_size,pos=screen.caption_anchor)
+screen.append_to_caption('\n')
 chk_axises = checkbox(text='Show X,Y,Z Axis',bind=manage_axises,pos=screen.caption_anchor,checked=True)
 screen.append_to_caption('\n')
 chk_poles = checkbox(text='Show North & South Poles',bind=manage_poles,pos=screen.caption_anchor,checked=False)
 
-screen.append_to_caption('\n\nSlide to obtain inclination angle: \n')
+
+screen.append_to_caption('\n\n_______________________ Environment ______________________\n')
+screen.append_to_caption('Slide to obtain inclination angle: \n')
 tilt_slider = slider(bind=manage_tilt,min=-23.5,max=23.5,value=23.5,step=0.1,id='Tilt')
-stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen)
+stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen,pos=screen.caption_anchor)
 
 screen.append_to_caption('\n\n')
 chk_rotation = checkbox(text='Enable Earth rotation!',bind=manage_e_rotation,pos=screen.caption_anchor,checked=False)
