@@ -158,7 +158,6 @@ while True:
             earth_anomaly = 0
         
         secs = earth_anomaly * day_secs/(2*pi)
-        print (secs)
         time_of_the_day.text = 'Time of the day = ' + strftime("%H:%M:%S", gmtime(secs))
 
         earth_anomaly = earth_anomaly + mag(earth.angular_velocity) * dt
