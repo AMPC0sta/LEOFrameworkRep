@@ -8,7 +8,6 @@ from coordinateSystem import *
 from earthModel import EarthModel
 
 
-
 # Global main settings
 width=1320
 height=650
@@ -17,6 +16,8 @@ screen_sizes = ['1320x650','1800x850']
 
 main_title = 'Orbit Visualizer'
 tilt = 23.5
+dt = 0.01
+real_dt = dt
 
 # seconds on a day (non sidereal day)
 # 360 º anomaly state earth full rotation (day)
@@ -80,7 +81,15 @@ def manage_tilt(event):
 def manage_e_rotation(event):
     global e_rotation 
     e_rotation = event.checked
-
+    
+def manage_speed(evt):
+    global dt
+    if evt.text == 'Increase Time':
+        dt = 1.1 * dt
+    if evt.text == 'Decrease Time':
+        dt = 0.9 * dt
+    if evt.text == 'Real Time':
+        dt = real_dt
 
 
 # Coordinates systems set and earth inclination    
@@ -107,6 +116,12 @@ stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen,pos=screen.captio
 
 screen.append_to_caption('\n\n')
 chk_rotation = checkbox(text='Enable Earth rotation!',bind=manage_e_rotation,pos=screen.caption_anchor,checked=False)
+screen.append_to_caption('\n\nManage time delta\n')
+
+dec_speed = button(bind=manage_speed,text='Decrease Time',pos=screen.caption_anchor,canvas=screen)
+real_speed = button(bind=manage_speed,text='Real Time',pos=screen.caption_anchor,canvas=screen)
+inc_speed = button(bind=manage_speed,text='Increase Time',pos=screen.caption_anchor,canvas=screen)
+
 screen.append_to_caption('\n\n<b>____________________ Dashboard ______________________</b>\n')
 elapsed_text = wtext(text='Time elapsed = 0 sec',canvas=screen)
 screen.append_to_caption('\n')
@@ -120,7 +135,6 @@ screen.append_to_caption('Use mouse right button to change camera position\n')
 
 
 # Temporal buckets (to be changed to allig with UTC, and seasonal daylight)
-dt = 0.01 
 t = 0
 ptr = 0
 earth_anomaly = 0
