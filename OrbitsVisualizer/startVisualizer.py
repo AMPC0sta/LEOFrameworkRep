@@ -1,6 +1,7 @@
 from vpython import *
 from numpy import *
 from datetime import *
+from time import *
 
 from visualizerParameters import VisualizerParameters
 from coordinateSystem import *
@@ -16,6 +17,10 @@ screen_sizes = ['1320x650','1800x850']
 
 main_title = 'Orbit Visualizer'
 tilt = 23.5
+
+# seconds on a day (non sidereal day)
+# 360 º anomaly state earth full rotation (day)
+day_secs = 24 * 60 * 60
 
 # Auxiliary variables
 e_rotation = False
@@ -102,10 +107,12 @@ stext = wtext(text=str(tilt_slider.value)+ " º",canvas=screen,pos=screen.captio
 
 screen.append_to_caption('\n\n')
 chk_rotation = checkbox(text='Enable Earth rotation!',bind=manage_e_rotation,pos=screen.caption_anchor,checked=False)
-screen.append_to_caption('\n\n<b>___________________________________________________</b>\n')
+screen.append_to_caption('\n\n<b>____________________ Dashboard ______________________</b>\n')
 elapsed_text = wtext(text='Time elapsed = 0 sec',canvas=screen)
 screen.append_to_caption('\n')
 elapsed_angle_text = wtext(text='Earth rotation anomaly = 0 º',canvas=screen)
+screen.append_to_caption('\n')
+time_of_the_day = wtext(text='Time of the day = 00:00:00',canvas=screen)
 screen.append_to_caption('\n\n<b>___________________________________________________</b>\n')
 screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
@@ -135,7 +142,11 @@ while True:
         earth.earth_rotation(dt)
         if earth_anomaly > 2 * pi:
             earth_anomaly = 0
-            
+        
+        secs = earth_anomaly * day_secs/(2*pi)
+        print (secs)
+        time_of_the_day.text = 'Time of the day = ' + strftime("%H:%M:%S", gmtime(secs))
+
         earth_anomaly = earth_anomaly + mag(earth.angular_velocity) * dt
         elapsed_angle_text.text= 'Earth rotation anomaly = ' + str(round(earth_anomaly*180/pi,3))  + ' º'
 
