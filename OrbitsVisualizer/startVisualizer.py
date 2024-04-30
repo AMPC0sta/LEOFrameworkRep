@@ -22,7 +22,7 @@ e_rotation = False
 
 
 # Starting graphical objects
-screen = canvas(width=(width*4/5)-50,height=height,align='left',title=main_title)
+screen = canvas(width=(width*4/5)-50,height=height,align='left',title='<b>'+main_title+'</b>')
 parameters = VisualizerParameters()
 l = parameters.e_radius
 c = CoordinateSystem(lenght=l,screen=screen)
