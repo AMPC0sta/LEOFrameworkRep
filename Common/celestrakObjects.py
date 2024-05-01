@@ -19,7 +19,11 @@ class CelestrakObjects:
         self.to_utc = to_utc
         
         current_time = self.from_utc
+        self.motion_points = []
+        
         while current_time < to_utc:
-            self.orbit.get_position(current_time)    
+            point = self.orbit.get_position(current_time)    
+            self.motion_points.append(point)
+            print (point)
             current_time += datetime.timedelta(minutes=1)
         
