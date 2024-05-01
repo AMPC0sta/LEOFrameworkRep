@@ -70,34 +70,35 @@ def manage_axises(event):
     if event.checked:
         c.visibility(True)
         earth.poles_visibility(False)
-        chk_poles.checked = False
-            
+        chk_poles.checked = False        
     else:
         c.visibility(False)
         
+        
 def manage_poles(event):
-        if event.checked:
-            earth.poles_visibility(True)
-            c.visibility(False)
-            chk_axises.checked = False
-
-        else:
-            earth.poles_visibility(False)
+    if event.checked:
+        earth.poles_visibility(True)
+        c.visibility(False)
+        chk_axises.checked = False
+    else:
+        earth.poles_visibility(False)
+        
         
 def manage_tilt(event):
     global tilt
     global tmp_tilt
     if event.id == 'Tilt':
-        tmp_tilt = event.value
-        
+        tmp_tilt = event.value    
         earth.inclination(angle=(tmp_tilt-tilt) * pi/180)
         c.inclination(angle=(tmp_tilt-tilt) * pi/180)
         tilt = tmp_tilt
         stext.text = str(event.value)+ " º"
 
+
 def manage_e_rotation(event):
     global e_rotation 
     e_rotation = event.checked
+
     
 def manage_speed(evt):
     global dt
