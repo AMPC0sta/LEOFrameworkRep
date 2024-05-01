@@ -18,11 +18,12 @@ class CelestrakObjects:
         self.to_utc = to_utc
         
         current_time = self.from_utc
-        self.motion_points = []
+        self.motion_position_points = []
         
         while current_time < to_utc:
-            point = self.orbit.get_position(current_time)    
-            self.motion_points.append(point)
-            print ('POINTS => ' + str(point))
+            position,velocity = self.orbit.get_position(current_time)    # normalized position and velocity
+            x,y,z = position
+            point4D = (x,y,z,current_time)
+            self.motion_position_points.append(point4D)
             current_time += datetime.timedelta(minutes=1)
         
