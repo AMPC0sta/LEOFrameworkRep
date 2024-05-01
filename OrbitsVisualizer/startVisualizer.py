@@ -1,6 +1,6 @@
 from vpython import *
 from numpy import *
-from datetime import *
+import datetime 
 from time import *
 import sys
 import os
@@ -33,6 +33,8 @@ day_secs = 24 * 60 * 60
 # Auxiliary variables
 e_rotation = False
 selected_satellite = None
+start_time = None
+end_time = None
 
 
 # Starting graphical objects
@@ -64,6 +66,15 @@ def manage_satellite(m):
     global selected_satellite
     
     selected_satellite = m.selected
+    if selected_satellite != None:
+        satellites_db.pick_one_sat(selected_satellite)
+    
+        current_time = datetime.datetime.now()
+        start_time = current_time - datetime.timedelta(hours=12)
+        end_time = current_time + datetime.timedelta(hours=12)
+    
+        satellites_db.get_orbits(start_time,end_time)
+    
     
 
 def manage_axises(event):
@@ -160,7 +171,7 @@ screen.append_to_caption('Use mouse right button to change camera position\n')
 t = 0
 ptr = 0
 earth_anomaly = 0
-dt_i = datetime.now()
+dt_i = datetime.datetime.now()
 
 while True:
     rate(60)   # Allow 60 animation frames iteration per second
@@ -169,7 +180,7 @@ while True:
     ptr = ptr + 1
     
     if ptr==60:
-        dt_a = datetime.now()
+        dt_a = datetime.datetime.now()
         tmp = dt_a - dt_i
         elapsed_text.text = 'Time Elapsed = ' + str(tmp) + ' secs.'
         ptr=0

@@ -12,8 +12,7 @@ class CelestrakObjects:
             
     def pick_one_sat(self,satellite):
         self.orbit = orbital.Orbital(satellite)
-    
-    
+        
     def get_orbits(self,from_utc,to_utc):
         self.from_utc = from_utc
         self.to_utc = to_utc
@@ -24,6 +23,6 @@ class CelestrakObjects:
         while current_time < to_utc:
             point = self.orbit.get_position(current_time)    
             self.motion_points.append(point)
-            print (point)
+            print ('POINTS => ' + str(point))
             current_time += datetime.timedelta(minutes=1)
         
