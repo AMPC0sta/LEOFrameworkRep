@@ -35,6 +35,7 @@ e_rotation = False
 selected_satellite = None
 start_time = None
 end_time = None
+satellite = None
 
 
 # Starting graphical objects
@@ -73,7 +74,9 @@ def manage_satellite(m):
         start_time = current_time - datetime.timedelta(hours=12)
         end_time = current_time + datetime.timedelta(hours=12)
     
-        satellites_db.get_orbits(start_time,end_time)
+        motion_points = satellites_db.get_orbits(start_time,end_time)
+        #(x,y,z,t) = c.transform_4d_point(motion_points[0])
+        #satellites = sphere(pos=
     
     
 

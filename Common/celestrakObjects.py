@@ -27,3 +27,4 @@ class CelestrakObjects:
             self.motion_position_points.append(point4D)
             current_time += datetime.timedelta(minutes=1)
         
+        return self.motion_position_points

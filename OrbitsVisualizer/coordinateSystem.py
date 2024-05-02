@@ -86,3 +86,11 @@ class CoordinateSystem:
         self.y_axis.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
         self.y_lbl.rotate(origin=self.center,axis=self.rot_axis_z,angle=self.angle)
 
+
+    def transform_4d_point(self,points,o_system,t_system):
+        (x,y,z,t) = points
+    
+        if o_system == 'vpyton' and t_system == 'ecef':
+            p = (z,y,x,t)
+        
+        return p
