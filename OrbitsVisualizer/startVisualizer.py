@@ -179,7 +179,7 @@ time_of_the_day = wtext(text='Time of the day = 00:00:00',canvas=screen)
 screen.append_to_caption('\n\n<b>___________________________________________________</b>\n')
 screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
-
+screen.append_to_caption('Listed satellites orbital parameters (TLE) are placed on www.celestrak.org, it may take a while to download!\n')
 
 
 # Temporal buckets (to be changed to allig with UTC, and seasonal daylight)
