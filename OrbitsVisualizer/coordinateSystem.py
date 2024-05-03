@@ -91,6 +91,6 @@ class CoordinateSystem:
         (x,y,z,t) = points
     
         if o_system == 'vpyton' and t_system == 'ecef':
-            p = (z,y,x,t)
+            return (z,y,x,t)
         
-        return p
+        return points
