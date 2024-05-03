@@ -46,7 +46,7 @@ c = CoordinateSystem(lenght=l,screen=screen)
 # load available TLE objects on Celestrak website
 satellites_db = CelestrakObjects()
 satellite = sphere(pos=vector(0,0,0),radius=1e2,canvas=screen,color=color.green,trail=True)
-trail = curve(canvas=screen,pos=vector(0,0,0),color=color.green)
+trail = curve(canvas=screen,color=color.green)
 
 
 # Interface control events/management
@@ -68,6 +68,7 @@ def manage_satellite(m):
     global selected_satellite
     global motion_points
     global satellite
+    global screen
     
 
     if len(motion_points) == 0:
@@ -87,9 +88,9 @@ def manage_satellite(m):
         p = parameters.e_radius * vector(x,y,z)
         satellite.pos = p
         trail.append(p)
+
+        screen.title='<b>'+main_title+' ('+selected_satellite+')</b>'
         
-    
-    
 
 def manage_axises(event):
     if event.checked:
@@ -143,7 +144,7 @@ c.inclination(angle=23.5 * pi/180)
 
 
 # Drawing interface controls
-screen.append_to_caption('<p style="font-size:30px"><b>Visualizer Controls</b></p>\n<b>__________________ Graphic Interface __________________\n</b>')
+screen.append_to_caption('<p style="font-size:25px"><b>Visualizer Controls</b></p>\n<b>__________________ Graphic Interface __________________\n</b>')
 screen.append_to_caption('Screen Sizes')
 menu_sizes = menu(choices=screen_sizes,bind=select_screen_size,pos=screen.caption_anchor)
 screen.append_to_caption('\n')
@@ -221,3 +222,4 @@ while True:
         i = i + 1
     else:
         i = 0
+        trail.clear()
