@@ -23,5 +23,9 @@ class SatelliteRepresentation:
 
         # Set initial position of the satellite
         self.satellite.pos = self.pos
-        self.satellite.size = self.size
+        self.satellite.size = self.satellite.size * self.size 
 
+sat = SatelliteRepresentation()
+
+while True:
+    pass
