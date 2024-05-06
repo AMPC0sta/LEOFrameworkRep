@@ -25,6 +25,7 @@ main_title = 'Orbit Visualizer'
 tilt = 23.5
 dt = 0.01
 real_dt = dt
+motion_points = []
 
 # seconds on a day (non sidereal day)
 # 360 º anomaly state earth full rotation (day)
@@ -35,7 +36,6 @@ e_rotation = False
 selected_satellite = None
 start_time = None
 end_time = None
-satellite = None
 
 
 # Starting graphical objects
@@ -45,7 +45,8 @@ l = parameters.e_radius
 c = CoordinateSystem(lenght=l,screen=screen)
 # load available TLE objects on Celestrak website
 satellites_db = CelestrakObjects()
-
+satellite = sphere(pos=vector(0,0,0),radius=1e2,canvas=screen,color=color.green,trail=True)
+trail = curve(canvas=screen,color=color.green)
 
 
 # Interface control events/management
@@ -65,8 +66,16 @@ def select_screen_size(m):
     
 def manage_satellite(m):
     global selected_satellite
+    global motion_points
+    global satellite
+    global screen
     
+
+    if len(motion_points) == 0:
+        motion_points =  []
+
     selected_satellite = m.selected
+
     if selected_satellite != None:
         satellites_db.pick_one_sat(selected_satellite)
     
@@ -75,10 +84,13 @@ def manage_satellite(m):
         end_time = current_time + datetime.timedelta(hours=12)
     
         motion_points = satellites_db.get_orbits(start_time,end_time)
-        #(x,y,z,t) = c.transform_4d_point(motion_points[0])
-        #satellites = sphere(pos=
-    
-    
+        (x,y,z,t) = c.transform_4d_point(points=motion_points[0],o_system='vpython',t_system='ecef')
+        p = parameters.e_radius * vector(x,y,z)
+        satellite.pos = p
+        trail.append(p)
+
+        screen.title='<b>'+main_title+' ('+selected_satellite+')</b>'
+        
 
 def manage_axises(event):
     if event.checked:
@@ -132,7 +144,7 @@ c.inclination(angle=23.5 * pi/180)
 
 
 # Drawing interface controls
-screen.append_to_caption('<p style="font-size:30px"><b>Visualizer Controls</b></p>\n<b>__________________ Graphic Interface __________________\n</b>')
+screen.append_to_caption('<p style="font-size:25px"><b>Visualizer Controls</b></p>\n<b>__________________ Graphic Interface __________________\n</b>')
 screen.append_to_caption('Screen Sizes')
 menu_sizes = menu(choices=screen_sizes,bind=select_screen_size,pos=screen.caption_anchor)
 screen.append_to_caption('\n')
@@ -167,7 +179,8 @@ time_of_the_day = wtext(text='Time of the day = 00:00:00',canvas=screen)
 screen.append_to_caption('\n\n<b>___________________________________________________</b>\n')
 screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
-
+screen.append_to_caption('Listed satellites orbital parameters are placed on www.celestrak.org\n')
+screen.append_to_caption('it may take a while to download!\n')
 
 
 # Temporal buckets (to be changed to allig with UTC, and seasonal daylight)
@@ -175,6 +188,8 @@ t = 0
 ptr = 0
 earth_anomaly = 0
 dt_i = datetime.datetime.now()
+i = 0
+#array_len  = motion_points.
 
 while True:
     rate(60)   # Allow 60 animation frames iteration per second
@@ -199,5 +214,13 @@ while True:
         earth_anomaly = earth_anomaly + mag(earth.angular_velocity) * dt
         elapsed_angle_text.text= 'Earth rotation anomaly = ' + str(round(earth_anomaly*180/pi,3))  + ' º'
 
-    
-
+    if i < len(motion_points):
+        (x,y,z,t1) = c.transform_4d_point(motion_points[i],'vpython','ecef')
+        
+        satellite.pos = parameters.e_radius * vector(x,y,z)
+        trail.append(satellite.pos)
+        
+        i = i + 1
+    else:
+        i = 0
+        trail.clear()
