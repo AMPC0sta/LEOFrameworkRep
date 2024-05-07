@@ -14,6 +14,7 @@ from visualizerParameters import VisualizerParameters
 from coordinateSystem import *
 from earthModel import EarthModel
 from Common.celestrakObjects import *   
+from satelliteRepresentation import *
 
 # Global main settings
 width=1320
@@ -45,7 +46,12 @@ l = parameters.e_radius
 c = CoordinateSystem(lenght=l,screen=screen)
 # load available TLE objects on Celestrak website
 satellites_db = CelestrakObjects()
-satellite = sphere(pos=vector(0,0,0),radius=1e2,canvas=screen,color=color.green,trail=True)
+
+# Draw satellite
+satellite = SatelliteRepresentation(space=screen)
+satellite.set_size(size=vector(500,500,500))
+satellite.visible = False
+
 trail = curve(canvas=screen,color=color.green)
 
 
@@ -86,7 +92,9 @@ def manage_satellite(m):
         motion_points = satellites_db.get_orbits(start_time,end_time)
         (x,y,z,t) = c.transform_4d_point(points=motion_points[0],o_system='vpython',t_system='ecef')
         p = parameters.e_radius * vector(x,y,z)
-        satellite.pos = p
+
+        satellite.visible = True
+        satellite.set_position(pos=p)
         trail.append(p)
 
         screen.title='<b>'+main_title+' ('+selected_satellite+')</b>'
@@ -217,8 +225,8 @@ while True:
     if i < len(motion_points):
         (x,y,z,t1) = c.transform_4d_point(motion_points[i],'vpython','ecef')
         
-        satellite.pos = parameters.e_radius * vector(x,y,z)
-        trail.append(satellite.pos)
+        satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
+        trail.append(satellite.get_position())
         
         i = i + 1
     else:

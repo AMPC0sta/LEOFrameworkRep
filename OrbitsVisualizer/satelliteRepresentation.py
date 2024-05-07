@@ -2,30 +2,46 @@ from vpython import *
 
 class SatelliteRepresentation:
     
-    def __init__(self,canvas=canvas(),size=1,pos=vector(0,0,0)):
-        self.canvas=canvas
-        self.size = size
+    def __init__(self,space=canvas(title='Default'),size = vector(500,500,500),pos=vector(0,0,0)):
+        self.space=space
         self.pos = pos
+        self.size = size
         
         # Create satellite body (cylinder)
-        self.satellite_body = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 1e6), radius=5e5, color=color.red,canvas = self.canvas)
+        self.satellite_body = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 1e3), radius=5e2, color=color.red,canvas = self.space)
 
         # Create satellite solar panels (planes)
-        self.panel1 = box(pos=vector(1.4e6, 0, 5e5), size=vector(2e6, 0.8e6, 0.1e6), color=color.gray(0.5),canvas=self.canvas)
-        self.panel2 = box(pos=vector(-1.4e6, 0, 5e5), size=vector(2e6, 0.8e6, 0.1e6), color=color.gray(0.5),canvas=self.canvas)
+        self.panel1 = box(pos=vector(1.4e3, 0, 5e2), size=vector(2e3, 0.8e3, 0.1e3), color=color.gray(0.5),canvas=self.space)
+        self.panel2 = box(pos=vector(-1.4e3, 0, 5e2), size=vector(2e3, 0.8e3, 0.1e3), color=color.gray(0.5),canvas=self.space)
 
         # Create satellite antenna
-        self.antenna = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 2e6), radius=0.05e6, color=color.yellow,canvas=self.canvas)
+        self.antenna = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 2e3), radius=0.05e3, color=color.yellow,canvas=self.space)
 
 
         # Group components into a single compound object
-        self.satellite = compound([self.satellite_body, self.panel1, self.panel2, self.antenna])
+        self.satellite = compound([self.satellite_body, self.panel1, self.panel2, self.antenna],canvas=self.space)
+        self.satellite.size = self.size
 
         # Set initial position of the satellite
         self.satellite.pos = self.pos
-        self.satellite.size = self.satellite.size * self.size 
 
-sat = SatelliteRepresentation()
 
-while True:
-    pass
+    def set_position(self,pos):
+        self.pos = pos
+        self.satellite.pos = self.pos
+        
+    def set_size(self,size):
+        self.size = size
+        self.satellite.size = self.size
+        
+    def get_size(self):
+        return self.size
+    
+    def get_position(self):
+        return self.pos
+
+
+#sat = SatelliteRepresentation()
+
+#while True:
+#    pass
