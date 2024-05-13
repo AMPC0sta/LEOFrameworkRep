@@ -61,7 +61,6 @@ class CoordinateSystem:
 
     def read_coordinates_visibility(self):
         return self.state
-    
         
     # VPython axis order are Y,Z,X instead of X,Y,Z so that a transformation is needed to the axis    
     def transform_from_vpython_to_ecef(self):

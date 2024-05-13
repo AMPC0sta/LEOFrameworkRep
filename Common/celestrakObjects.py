@@ -12,6 +12,11 @@ class CelestrakObjects:
             
     def pick_one_sat(self,satellite):
         self.orbit = orbital.Orbital(satellite)
+    
+     
+    
+    def get_object_period(self):
+        return self.orbit.orbit_elements.period
         
     def get_orbits(self,from_utc,to_utc):
         self.from_utc = from_utc

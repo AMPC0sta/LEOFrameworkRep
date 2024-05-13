@@ -8,6 +8,7 @@ class EarthModel:
         self.radius=radius
         self.canvas = canvas
         self.tilt = 0
+        self.w = (2*pi)/(24*60*60)
         
         
         # Draw earth sphere, with world maps, and set lights from west
@@ -20,8 +21,8 @@ class EarthModel:
         self.npole = cylinder(pos=self.earth_center,axis=1.5*self.radius*vector(-sin(self.tilt),cos(self.tilt),0),radius=0.01*self.radius,visible=False)
         self.spole = cylinder(pos=self.earth_center,axis=-1.5*self.radius*vector(-sin(self.tilt),cos(self.tilt),0),radius=0.01*self.radius,visible=False)
         
-        self.angular_velocity = 1*norm(self.npole.axis)
-     
+        self.angular_velocity = self.w*norm(self.npole.axis)
+        
      
     def inclination(self,angle):
         self.tilt = angle
@@ -33,8 +34,10 @@ class EarthModel:
         self.npole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
         self.spole.rotate(origin=self.earth_center,axis=vector(0,0,1),angle=self.tilt)
         
-        self.angular_velocity = 1*norm(self.npole.axis)
+        self.angular_velocity = self.w*norm(self.npole.axis)
     
+    
+        
     
     def poles_visibility(self,status):
         self.npole.visible=status

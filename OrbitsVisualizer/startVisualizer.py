@@ -19,24 +19,26 @@ from satelliteRepresentation import *
 # Global main settings
 width=1320
 height=650
-
+sim_speed = 60  # 60 frames per second ( each frame correspond to one minute dt )
+real_sim_speed = sim_speed
 screen_sizes = ['1320x650','1800x850']
 
 main_title = 'Orbit Visualizer'
 tilt = 23.5
-dt = 0.01
-real_dt = dt
+dt = 60
 motion_points = []
 
 # seconds on a day (non sidereal day)
 # 360 º anomaly state earth full rotation (day)
 day_secs = 24 * 60 * 60
+day_min = 24 * 60
 
 # Auxiliary variables
 e_rotation = False
 selected_satellite = None
 start_time = None
 end_time = None
+satellite_on = False
 
 
 # Starting graphical objects
@@ -75,7 +77,8 @@ def manage_satellite(m):
     global motion_points
     global satellite
     global screen
-    
+    global satellite_on
+    global period
 
     if len(motion_points) == 0:
         motion_points =  []
@@ -89,7 +92,11 @@ def manage_satellite(m):
         start_time = current_time - datetime.timedelta(hours=12)
         end_time = current_time + datetime.timedelta(hours=12)
     
+        satellite_on = True
+        period = satellites_db.get_object_period()
+        
         motion_points = satellites_db.get_orbits(start_time,end_time)
+
         (x,y,z,t) = c.transform_4d_point(points=motion_points[0],o_system='vpython',t_system='ecef')
         p = parameters.e_radius * vector(x,y,z)
 
@@ -135,13 +142,13 @@ def manage_e_rotation(event):
 
     
 def manage_speed(evt):
-    global dt
+    global sim_speed
     if evt.text == 'Increase Time':
-        dt = 1.1 * dt
+        sim_speed = trunc(1.1 * sim_speed)
     if evt.text == 'Decrease Time':
-        dt = 0.9 * dt
+        sim_speed = trunc(0.9 * sim_speed)
     if evt.text == 'Real Time':
-        dt = real_dt
+        sim_speed = real_sim_speed
 
 
 # Coordinates systems set and earth inclination    
@@ -179,7 +186,7 @@ list = satellites_db.satellites_list
 menu_sat = menu(text="Load satellite orbit",choices=list,bind=manage_satellite,pos=screen.caption_anchor,canvas=screen)
 screen.append_to_caption('\n\n<b>____________________ Dashboard ______________________</b>\n')
 
-elapsed_text = wtext(text='Time elapsed = 0 sec',canvas=screen)
+elapsed_text = wtext(text='Satellite Orbit Time elapsed = 0 min',canvas=screen)
 screen.append_to_caption('\n')
 elapsed_angle_text = wtext(text='Earth rotation anomaly = 0 º',canvas=screen)
 screen.append_to_caption('\n')
@@ -199,36 +206,38 @@ dt_i = datetime.datetime.now()
 i = 0
 #array_len  = motion_points.
 
+# v = radius * w  --> tangential velocity from angular
+# w = v/radius --> angular velocity from linear
+# w = v * radius/radius = v rads/s --> because linear velocity is normalized 
+
 while True:
-    rate(60)   # Allow 60 animation frames iteration per second
-    
-    t = t  + dt
-    ptr = ptr + 1
-    
-    if ptr==60:
-        dt_a = datetime.datetime.now()
-        tmp = dt_a - dt_i
-        elapsed_text.text = 'Time Elapsed = ' + str(tmp) + ' secs.'
-        ptr=0
+    rate(sim_speed)   # Allow X animation frames iteration per second
     
     if e_rotation == True:
         earth.earth_rotation(dt)
         if earth_anomaly > 2 * pi:
             earth_anomaly = 0
-        
+            
         secs = earth_anomaly * day_secs/(2*pi)
+
         time_of_the_day.text = 'Time of the day = ' + strftime("%H:%M:%S", gmtime(secs))
 
         earth_anomaly = earth_anomaly + mag(earth.angular_velocity) * dt
         elapsed_angle_text.text= 'Earth rotation anomaly = ' + str(round(earth_anomaly*180/pi,3))  + ' º'
-
-    if i < len(motion_points):
-        (x,y,z,t1) = c.transform_4d_point(motion_points[i],'vpython','ecef')
         
-        satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
-        trail.append(satellite.get_position())
+    if satellite_on:
+        if ptr < period-1:
+                if i < len(motion_points):
+                    (x,y,z,t1) = c.transform_4d_point(motion_points[i],'vpython','ecef')
         
-        i = i + 1
-    else:
-        i = 0
-        trail.clear()
+                    satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
+                    trail.append(satellite.get_position())
+                    i = i + 1
+                else:
+                    i = 0
+                
+                elapsed_text.text='Satellite Orbit Time elapsed = ' + str(ptr) + ' mins'
+                ptr = ptr + 1
+        else:
+            trail.clear()
+            ptr = 0
