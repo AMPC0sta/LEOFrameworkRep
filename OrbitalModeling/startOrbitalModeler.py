@@ -1,8 +1,12 @@
 from tkinter import *
+from tkinter import filedialog
 
+# to be used in event management (undefined events)
 def do_nothing():
     pass
 
+
+# create frames with labels
 def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     frame = Frame(root, bg="white", bd=1, relief=RAISED)
     frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew")
@@ -13,6 +17,12 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
         label.pack(padx=10, pady=5)  # Adjust padding as needed
     
     return frame
+
+def open_tle_file_dialog():
+    file_path = filedialog.askopenfilename(title="Select a file", filetypes=(("tle files", "*.tle"),("TLE files", "*.TLE"),("All files", "*.*")))
+    if file_path:
+        print("Selected file:", file_path)
+        # Add your code to handle the selected file here
 
 
 screen = Tk(className=' Low Earth Orbit Calculator')
@@ -40,7 +50,7 @@ top_menu_bar.add_cascade(label='Propagators',menu=prop_group)
 
 o_elem_group = Menu(top_menu_bar,tearoff=0)
 o_elem_group.add_command(label='Keplerian Elements')
-o_elem_group.add_command(label='Load TLE')
+o_elem_group.add_command(label='Load TLE',command=open_tle_file_dialog)
 top_menu_bar.add_cascade(label='Orbiting Object',menu=o_elem_group)
 
 
