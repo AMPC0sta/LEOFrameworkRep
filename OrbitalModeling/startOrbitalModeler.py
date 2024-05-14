@@ -3,10 +3,20 @@ from tkinter import *
 def do_nothing():
     pass
 
+def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
+    frame = Frame(root, bg="white", bd=1, relief=RAISED)
+    frame.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan, sticky="nsew")
+    
+    # Add a label as the title
+    if title:
+        label = Label(frame, text=title, fg="black", font=("Arial", 12, "bold"))
+        label.pack(padx=10, pady=5)  # Adjust padding as needed
+    
+    return frame
+
+
 screen = Tk(className=' Low Earth Orbit Calculator')
-screen.geometry('1600x900')
-
-
+screen.geometry('1600x800')
 
 top_menu_bar = Menu(screen)
 
@@ -46,6 +56,26 @@ custom_group.add_command(label='Save As',command=do_nothing)
 custom_group.add_command(label='Close Model',command=do_nothing)
 top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
+
+
+# Split screens horizontally
+screen.grid_rowconfigure(0,weight=1)
+screen.grid_rowconfigure(1,weight=3)
+screen.grid_columnconfigure(0, weight=1)
+
+frame_top = create_frame(screen,0,0,title='Operative Sequence')
+frame_under = create_frame(screen,1,0)
+
+
+# Split bottom area vertically into 3 areas
+frame_under.grid_columnconfigure(0,weight=1)
+frame_under.grid_columnconfigure(1,weight=2)
+frame_under.grid_columnconfigure(2,weight=2)
+frame_under.grid_rowconfigure(0,weight=1)
+
+frame_under_left = create_frame(frame_under,0,0,title='Project Information')
+frame_under_left = create_frame(frame_under,0,1,title='Satellite Parameters')
+frame_under_left = create_frame(frame_under,0,2,title='Propagator Parameters')
 
 screen.config(menu=top_menu_bar)
 screen.mainloop()
