@@ -1,5 +1,39 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter.font import Font
+
+button_ptr=0
+operations = []
+
+screen = Tk(className=' Low Earth Orbit Calculator')
+screen.geometry('1600x800')
+
+def trigger_op_button(ptr):
+    open_input_operation_parameters_form()
+
+
+def insert_mission_ops_button():
+    global button_ptr
+    global operations   
+    
+    bold_font = Font(family="Helvetica", size=10, weight="bold")
+    
+    operations.append(Button(frame_top, text=str(button_ptr+1)+':Click to Edit Phase',command=lambda: trigger_op_button(button_ptr),font=bold_font))
+    operations[button_ptr].pack(side=LEFT, padx=2, pady=5, expand=True, fill=X)
+
+    button_ptr=button_ptr+1
+    
+    
+def open_input_operation_parameters_form():    
+    popup = Toplevel(screen)
+    popup.geometry('500x350')
+    popup.title("Setup Mission Phase")
+    
+    Label(popup, text="Phase Name:").pack()
+    Entry(popup).pack()
+    
+    Button(popup, text="OK").pack()
+
 
 # to be used in event management (undefined events)
 def do_nothing():
@@ -26,8 +60,28 @@ def open_tle_file_dialog():
         # Add your code to handle the selected file here
 
 
-screen = Tk(className=' Low Earth Orbit Calculator')
-screen.geometry('1600x800')
+
+
+# Split screens horizontally
+screen.grid_rowconfigure(0,weight=1)
+screen.grid_rowconfigure(1,weight=40)
+screen.grid_columnconfigure(0, weight=1)
+
+frame_top = create_frame(screen,0,0,title='Mission Setup')
+frame_under = create_frame(screen,1,0)
+
+
+# Split bottom area vertically into 3 areas
+frame_under.grid_columnconfigure(0,weight=1)
+frame_under.grid_columnconfigure(1,weight=2)
+frame_under.grid_columnconfigure(2,weight=2)
+frame_under.grid_rowconfigure(0,weight=1)
+
+frame_under_left = create_frame(frame_under,0,0,title='Project Information')
+frame_under_left = create_frame(frame_under,0,1,title='Satellite Parameters')
+frame_under_left = create_frame(frame_under,0,2,title='Propagator Parameters')
+
+
 
 top_menu_bar = Menu(screen)
 
@@ -42,12 +96,13 @@ file_group.add_command(label='Exit',command=screen.quit)
 top_menu_bar.add_cascade(label='Project',menu=file_group)
 
 
-prop_group = Menu(top_menu_bar,tearoff=0)
-prop_group.add_command(label='PyOrbital',command=do_nothing)
-prop_group.add_command(label='SGP4',command=do_nothing)
+prop_group = Menu(top_menu_bar,tearoff=0)   
+prop_group.add_command(label='Wizard',command=do_nothing)
 prop_group.add_separator()
-prop_group.add_command(label='Custom',command=do_nothing)
-top_menu_bar.add_cascade(label='Propagators',menu=prop_group)
+prop_group.add_command(label='Insert Operation',command=insert_mission_ops_button)
+prop_group.add_command(label='Insert Op.Before',command=do_nothing)
+prop_group.add_command(label='Insert Op.After',command=do_nothing)
+top_menu_bar.add_cascade(label='Mission Setup',menu=prop_group)
 
 o_elem_group = Menu(top_menu_bar,tearoff=0)
 o_elem_group.add_command(label='Keplerian Elements')
@@ -69,24 +124,8 @@ top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
 
 
-# Split screens horizontally
-screen.grid_rowconfigure(0,weight=1)
-screen.grid_rowconfigure(1,weight=3)
-screen.grid_columnconfigure(0, weight=1)
-
-frame_top = create_frame(screen,0,0,title='Operative Sequence')
-frame_under = create_frame(screen,1,0)
 
 
-# Split bottom area vertically into 3 areas
-frame_under.grid_columnconfigure(0,weight=1)
-frame_under.grid_columnconfigure(1,weight=2)
-frame_under.grid_columnconfigure(2,weight=2)
-frame_under.grid_rowconfigure(0,weight=1)
-
-frame_under_left = create_frame(frame_under,0,0,title='Project Information')
-frame_under_left = create_frame(frame_under,0,1,title='Satellite Parameters')
-frame_under_left = create_frame(frame_under,0,2,title='Propagator Parameters')
 
 screen.config(menu=top_menu_bar)
 screen.mainloop()
