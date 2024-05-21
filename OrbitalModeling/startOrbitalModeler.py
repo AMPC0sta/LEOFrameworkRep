@@ -1,9 +1,10 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from tkinter.font import Font
 from  tkcalendar import *
 
 button_ptr=0
+button_index=0
 operations = []
 
 screen = Tk(className=' Low Earth Orbit Calculator')
@@ -14,10 +15,10 @@ def trigger_op_button_one_click(event):
 
 def trigger_op_button_double_click(event):
     global operations
+    global button_index
     
+    button_index = operations.index(event.widget)
     open_input_operation_parameters_form()
-
-
 
 
 def insert_mission_ops_button():
@@ -27,7 +28,7 @@ def insert_mission_ops_button():
     bold_font = Font(family="Helvetica", size=10, weight="bold")
     
     #operations.append(Button(frame_top, text=str(button_ptr+1)+':Click to Edit Phase',command=lambda: trigger_op_button(button_ptr),font=bold_font))
-    operations.append(Button(frame_top, text=str(button_ptr+1)+':Double click to Edit Phase',font=bold_font))
+    operations.append(Button(frame_top, text='Phase '+str(button_ptr+1)+'\nDouble click to Edit',font=bold_font,justify='left'))
     operations[button_ptr].pack(side=LEFT, padx=2, pady=5, expand=True, fill=X)
     operations[button_ptr].bind('<Button-1>',trigger_op_button_one_click)
     operations[button_ptr].bind('<Double-1>',trigger_op_button_double_click)
@@ -42,8 +43,38 @@ def open_input_operation_parameters_form():
         if file_path:
             tle_entry.delete(0, END)
             tle_entry.insert(0, file_path)
-            tle_entry.focus_set()
+            popup.focus_force()
+    
+    def get_input():
+        instance_name = name_entry.get()
+        tle_file = tle_entry.get()
+        start_datetime = start_date_entry.get()
+        end_datetime = end_date_entry.get()
         
+        # Basic validation
+        if not instance_name:
+            messagebox.showerror("Input Error", "Instance Name is required.")
+            return
+        if not tle_file:
+            messagebox.showerror("Input Error", "TLE File is required.")
+            return
+        if not start_datetime:
+            messagebox.showerror("Input Error", "Start Datetime is required.")
+            return
+        if not end_datetime:
+            messagebox.showerror("Input Error", "End Datetime is required.")
+            return
+        
+        # Print the inputs for now (you can replace this with actual logic to handle the inputs)
+        print("Instance Name:", instance_name)
+        #print("TLE File:", tle_file)
+        #print("Start Datetime:", start_datetime)
+        #print("End Datetime:", end_datetime)
+
+        print(button_index)
+        operations[button_index].config(text='Phase '+str(button_index) + '\n' + instance_name)
+        # Close the pop-up window
+        popup.destroy()    
     
     popup = Toplevel(screen)
     popup.geometry('500x350')
@@ -56,7 +87,7 @@ def open_input_operation_parameters_form():
     Label(popup, text="TLE File:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
     tle_entry = Entry(popup)
     tle_entry.grid(row=1, column=1, padx=5, pady=5)
-    tle_button = Button(popup, text="Browse", command=select_tle_file)
+    tle_button = Button(popup, text="Browse", command= lambda: select_tle_file() or popup.wait_window())
     tle_button.grid(row=1, column=2, padx=5, pady=5)
 
     Label(popup, text="Start Datetime:").grid(row=2, column=0, padx=5, pady=5, sticky="e")
