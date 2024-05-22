@@ -13,9 +13,14 @@ class MissionPhaseParameters:
             self.object_name = f.readline()
             f.close()
         else:
-            raise RuntimeError("There's no TLE file for this mission phase!")
+            raise RuntimeError("There's no TLE file set, for this mission phase!")
 
 
     def load_TLE_data(self):
         self.orbital_data = Orbital(self.object_name,self.tle_file)
 
+
+    def get_orbital_elements(self):
+        return self.orbital_data.orbit_elements
+    
+    
