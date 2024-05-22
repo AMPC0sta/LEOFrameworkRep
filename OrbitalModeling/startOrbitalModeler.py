@@ -61,8 +61,8 @@ def open_input_operation_parameters_form():
             messagebox.showerror("Input Error", "Instance Name is required.")
             return
         if not tle_file:
-            messagebox.showerror("Input Error", "TLE File is required.")
-            return
+            tle_file = None
+            
         if not start_datetime:
             messagebox.showerror("Input Error", "Start Datetime is required.")
             return
