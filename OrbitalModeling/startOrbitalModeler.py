@@ -3,16 +3,20 @@ from tkinter import filedialog, messagebox
 from tkinter.font import Font
 from  tkcalendar import *
 
-button_ptr=0
-button_index=0
-operations = []
+
+
+button_ptr=0            #create phase buttons auxiliary counter
+button_index=0          #clicked button index
+operations = []         #buttons array
 
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
+#if phase button is pressed
 def trigger_op_button_one_click(event):
     pass
 
+#if phase button is double pressed
 def trigger_op_button_double_click(event):
     global operations
     global button_index
@@ -21,13 +25,14 @@ def trigger_op_button_double_click(event):
     open_input_operation_parameters_form()
 
 
+#creating phase buttons
 def insert_mission_ops_button():
     global button_ptr
     global operations   
     
     bold_font = Font(family="Helvetica", size=10, weight="bold")
     
-    #operations.append(Button(frame_top, text=str(button_ptr+1)+':Click to Edit Phase',command=lambda: trigger_op_button(button_ptr),font=bold_font))
+    #creating button
     operations.append(Button(frame_top, text='Phase '+str(button_ptr+1)+'\nDouble click to Edit',font=bold_font,justify='left'))
     operations[button_ptr].pack(side=LEFT, padx=2, pady=5, expand=True, fill=X)
     operations[button_ptr].bind('<Button-1>',trigger_op_button_one_click)
@@ -65,14 +70,15 @@ def open_input_operation_parameters_form():
             messagebox.showerror("Input Error", "End Datetime is required.")
             return
         
+
         # Print the inputs for now (you can replace this with actual logic to handle the inputs)
-        print("Instance Name:", instance_name)
+        #print("Instance Name:", instance_name)
         #print("TLE File:", tle_file)
         #print("Start Datetime:", start_datetime)
         #print("End Datetime:", end_datetime)
 
-        print(button_index)
-        operations[button_index].config(text='Phase '+str(button_index) + '\n' + instance_name)
+        #print(button_index)
+        operations[button_index].config(text='Phase '+str(button_index+1) + '\n' + instance_name)
         # Close the pop-up window
         popup.destroy()    
     
@@ -120,7 +126,7 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     return frame
 
 # event management - Menu -> Orbiting Object -> TLE Load
-def open_tle_file_dialog():
+def     ():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=(("tle files", "*.tle"),("TLE files", "*.TLE"),("All files", "*.*")))
     if file_path:
         print("Selected file:", file_path)
@@ -134,7 +140,7 @@ screen.grid_rowconfigure(0,weight=1)
 screen.grid_rowconfigure(1,weight=40)
 screen.grid_columnconfigure(0, weight=1)
 
-frame_top = create_frame(screen,0,0,title='Mission Setup')
+frame_top = create_frame(screen,0,0,title='Mission Timeline')
 frame_under = create_frame(screen,1,0)
 
 
@@ -144,9 +150,9 @@ frame_under.grid_columnconfigure(1,weight=2)
 frame_under.grid_columnconfigure(2,weight=2)
 frame_under.grid_rowconfigure(0,weight=1)
 
-frame_under_left = create_frame(frame_under,0,0,title='Project Information')
+frame_under_left = create_frame(frame_under,0,0,title='Mission Information')
 frame_under_left = create_frame(frame_under,0,1,title='Satellite Parameters')
-frame_under_left = create_frame(frame_under,0,2,title='Propagator Parameters')
+frame_under_left = create_frame(frame_under,0,2,title='Motion Propagator Parameters')
 
 
 
