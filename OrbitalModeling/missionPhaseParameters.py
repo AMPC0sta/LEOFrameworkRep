@@ -9,8 +9,17 @@ class MissionPhaseParameters:
     
     def read_object_name(self):
         if self.tle_file != None:
-            f = open(self.tle_file,'r')
-            self.object_name = f.readline()
+            
+            
+            # If TLE (Two Lines Element file has 3 lines (than consider first line as being satellite name), other wise satellite name is the filename)
+            line = []
+            with open(self.tle_file,'r') as f:
+                for count,line[count] in enumerate(f):
+                    pass
+            if count + 1 == 3:
+                self.object_name = count[0]
+            else:
+                self.object_name = self.tle_file.split('\n')[len(self.tle_file.split)]
             f.close()
         else:
             raise RuntimeError("There's no TLE file set, for this mission phase!")
