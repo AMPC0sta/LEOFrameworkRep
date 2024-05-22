@@ -126,7 +126,7 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     return frame
 
 # event management - Menu -> Orbiting Object -> TLE Load
-def     ():
+def open_tle_file_dialog():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=(("tle files", "*.tle"),("TLE files", "*.TLE"),("All files", "*.*")))
     if file_path:
         print("Selected file:", file_path)
