@@ -1,5 +1,15 @@
 from pyorbital.orbital import Orbital
 
+import sys
+import os
+
+# Move backwards on directory tree to allow to import custom modules from others folders
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+from Common.orbitalElements import *
+
 class MissionPhaseParameters:
     
     def __init__(self,phase_name=None,phase_position=0,tle_file = None):
@@ -34,10 +44,10 @@ class MissionPhaseParameters:
     def load_TLE_data(self):
         self.read_object_name()
         self.orbital_data = Orbital(self.object_name,self.tle_file)
-        self.orbital_elements = self.orbital_data.orbit_elements
+        self.orbital_elements = OrbitalElements(self.orbital_data.orbit_elements)
 
 
     def print_orbital_elements(self):
-        print(self.orbital_elements.__str__())
+        print(self.orbital_elements)
     
     
