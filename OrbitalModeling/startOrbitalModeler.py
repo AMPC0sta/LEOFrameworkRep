@@ -39,7 +39,7 @@ def insert_mission_ops_button():
     operations[button_ptr].pack(side=LEFT, padx=2, pady=5, expand=True, fill=X)
     operations[button_ptr].bind('<Button-1>',trigger_op_button_one_click)
     operations[button_ptr].bind('<Double-1>',trigger_op_button_double_click)
-    mission.append(MissionPhaseParameters())
+    mission.append(MissionPhaseParameters(phase_position=button_ptr))
     button_ptr=button_ptr+1
     
     
@@ -84,7 +84,7 @@ def open_input_operation_parameters_form():
         operations[button_index].config(text='Phase '+str(button_index+1) + '\n' + instance_name)
         
         if mission[button_index].get_phase_name() == None:
-            mission[button_index] = MissionPhaseParameters(instance_name,tle_file)
+            mission[button_index] = MissionPhaseParameters(phase_name=instance_name,tle_file=tle_file,phase_position=button_index)
             mission[button_index].load_TLE_data()
             mission[button_index].print_orbital_elements()
           

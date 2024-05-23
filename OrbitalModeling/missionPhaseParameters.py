@@ -2,7 +2,7 @@ from pyorbital.orbital import Orbital
 
 class MissionPhaseParameters:
     
-    def __init__(self,phase_name,phase_position=0,tle_file = None):
+    def __init__(self,phase_name=None,phase_position=0,tle_file = None):
         self.phase_name = phase_name
         self.tle_file = tle_file
         self.phase_position = phase_position
@@ -25,7 +25,6 @@ class MissionPhaseParameters:
                 f.close()
             else:
                 self.object_name = self.tle_file.split('\n')[len(self.tle_file.split)]
-    
         else:
             raise RuntimeError("There's no TLE file set, for this mission phase!")
 
