@@ -3,11 +3,13 @@ from tkinter import filedialog, messagebox
 from tkinter.font import Font
 from  tkcalendar import *
 
+from missionPhaseParameters import *
 
 
 button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
 operations = []         #buttons array
+mission = []
 
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
@@ -18,7 +20,7 @@ def trigger_op_button_one_click(event):
 
 #if phase button is double pressed
 def trigger_op_button_double_click(event):
-    global operations
+    global operations,mission
     global button_index
     
     button_index = operations.index(event.widget)
@@ -28,7 +30,7 @@ def trigger_op_button_double_click(event):
 #creating phase buttons
 def insert_mission_ops_button():
     global button_ptr
-    global operations   
+    global operations,mission   
     
     bold_font = Font(family="Helvetica", size=10, weight="bold")
     
@@ -37,7 +39,7 @@ def insert_mission_ops_button():
     operations[button_ptr].pack(side=LEFT, padx=2, pady=5, expand=True, fill=X)
     operations[button_ptr].bind('<Button-1>',trigger_op_button_one_click)
     operations[button_ptr].bind('<Double-1>',trigger_op_button_double_click)
-
+    mission.append(MissionPhaseParameters())
     button_ptr=button_ptr+1
     
     
@@ -79,8 +81,20 @@ def open_input_operation_parameters_form():
 
         #print(button_index)
         operations[button_index].config(text='Phase '+str(button_index+1) + '\n' + instance_name)
+        
+        if mission[button_index].get_phase_name() == None:
+            mission[button_index] = MissionPhaseParameters(instance_name,tle_file)
+            mission[button_index].load_TLE_data()
+            mission[button_index].print_orbital_elements()
+          
+            
+            
+            
         # Close the pop-up window
         popup.destroy()    
+        
+    
+        
     
     popup = Toplevel(screen)
     popup.geometry('500x350')
