@@ -62,6 +62,7 @@ def open_input_operation_parameters_form():
         if not instance_name:
             messagebox.showerror("Input Error", "Instance Name is required.")
             return
+        
         if not tle_file:
             tle_file = None
             

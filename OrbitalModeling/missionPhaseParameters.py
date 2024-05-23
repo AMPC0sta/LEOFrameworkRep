@@ -2,9 +2,10 @@ from pyorbital.orbital import Orbital
 
 class MissionPhaseParameters:
     
-    def __init__(self,phase_name=None,tle_file = None):
+    def __init__(self,phase_name,phase_position=0,tle_file = None):
         self.phase_name = phase_name
         self.tle_file = tle_file
+        self.phase_position = phase_position
         
     
     def read_object_name(self):
