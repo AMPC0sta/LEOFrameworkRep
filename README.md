@@ -33,6 +33,7 @@ How to use?:
 Common             --> Folder with shared classes
   celestrakObjects.py           -- Manage and connects orbiting objects on www.celestrak.org 
   orbitalMechanics.py           -- Keplerian calculations 
+  orbitalElements.py            -- Encapsulation and extension of orbital elements of Orbital from PyOrbital.
 
 
 DiscoveryScripts:  --> Folder with the documented learning process (while coding)
