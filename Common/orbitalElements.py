@@ -1,5 +1,6 @@
 from pyorbital.orbital import Orbital
 from datetime import datetime, timezone
+from numpy import *
 
 import sys
 import os
@@ -40,11 +41,11 @@ class OrbitalElements:
         oe = self.orbital_elements
         utc_time = datetime.now()
         mean_motion=oe.mean_motion
-        
+                
         elements = [
             ("Time (UTC)", utc_time.isoformat()),
             ("Mean Anomaly (degrees)", MathUtils.rad2deg(oe.mean_anomaly)),
-            ("Mean Motion (revolutions/day)", mean_motion),
+            ("Mean Motion (rads/s)", mean_motion),
             ("Semi Major Axis (km)", OrbitalMechanics.earth_radius * oe.semi_major_axis),
             ("Argument of Perigee (degrees)", MathUtils.rad2deg(oe.arg_perigee)),
             ("Eccentricity", oe.excentricity),

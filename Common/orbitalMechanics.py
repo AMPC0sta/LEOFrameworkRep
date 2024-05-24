@@ -5,7 +5,6 @@ class OrbitalMechanics:
     Me = 5.972e24 # kg
     miu = G * Me
     earth_radius = 6371 #km
-    
-    
+        
     def __init__(self):
         pass
