@@ -36,7 +36,28 @@ class OrbitalElements:
             f"Period {oe.period} minutes\n"
         )
         
+    
+    # Selectors
+    def get_orbital_elements(self):
+        return self.orbital_elements
+    
+    
+    def set_satellite_name(self,satellite_name):
+        self.satellite_name = satellite_name
         
+    
+    def set_tle_filename(self,tle_filename):
+        self.tle_filename = tle_filename
+        
+        
+    def get_satellite_name(self):
+        return self.satellite_name
+    
+    
+    def get_tle_filename(self):
+        return self.tle_filename
+    
+    
     def to_show_on_widget(self):
         oe = self.orbital_elements
         utc_time = datetime.now()
