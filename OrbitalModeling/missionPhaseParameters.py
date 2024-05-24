@@ -49,6 +49,10 @@ class MissionPhaseParameters:
         self.orbital_elements.set_tle_filename(self.tle_file)
 
 
+    def get_orbital_elements(self):
+        return self.orbital_elements
+    
+    
     def print_orbital_elements(self):
         print(self.orbital_elements)
     

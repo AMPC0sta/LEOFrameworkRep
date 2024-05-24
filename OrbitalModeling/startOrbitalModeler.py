@@ -91,9 +91,12 @@ def open_input_operation_parameters_form():
             
             font_regular = Font(family="Helvetica", size=10)
             font_bold = Font(family="Helvetica", size=10,weight="bold")
-            frame_under_left.pack_propagate(False)
-            
+  
             elements.reverse()
+            elements.append(("TLE Filename",mission[button_index].get_orbital_elements().get_tle_filename()))
+            elements.append(("Satellite Name",mission[button_index].get_orbital_elements().get_satellite_name()))
+            frame_under_left.pack_propagate(False)             
+            
             for i, (label, value) in enumerate(elements):
                 pair_frame = Frame(frame_under_left)
                 pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
