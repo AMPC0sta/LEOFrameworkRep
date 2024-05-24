@@ -50,7 +50,7 @@ class OrbitalElements:
             ("Argument of Perigee (degrees)", MathUtils.rad2deg(oe.arg_perigee)),
             ("Eccentricity", oe.excentricity),
             ("Inclination (degrees)", MathUtils.rad2deg(oe.inclination)),
-            ("RAAN (Right Ascension of Ascending Node) (degrees)", MathUtils.rad2deg(oe.right_ascension)),
+            ("RAAN (degrees)", MathUtils.rad2deg(oe.right_ascension)),
             ("Period (minutes)",oe.period)
         ]
         
