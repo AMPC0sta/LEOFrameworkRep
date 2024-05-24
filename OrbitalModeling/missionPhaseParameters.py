@@ -45,6 +45,8 @@ class MissionPhaseParameters:
         self.read_object_name()
         self.orbital_data = Orbital(self.object_name,self.tle_file)
         self.orbital_elements = OrbitalElements(self.orbital_data.orbit_elements)
+        self.orbital_elements.set_satellite_name(self.object_name)
+        self.orbital_elements.set_tle_filename(self.tle_file)
 
 
     def print_orbital_elements(self):
