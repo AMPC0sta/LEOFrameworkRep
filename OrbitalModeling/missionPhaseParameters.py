@@ -31,7 +31,7 @@ class MissionPhaseParameters:
             
             if count + 1 == 3:
                 f = open(self.tle_file,'r')
-                self.object_name = f.readline()
+                self.object_name = f.readline().strip()
                 f.close()
             else:
                 self.object_name = self.tle_file.split('\n')[len(self.tle_file.split)]

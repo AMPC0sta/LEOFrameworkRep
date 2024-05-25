@@ -16,7 +16,11 @@ screen.geometry('1600x800')
 
 #if phase button is pressed
 def trigger_op_button_one_click(event):
-    pass
+    for button in operations:
+        button.config(relief='raised',bg='SystemButtonFace')
+
+    event.widget.config(relief='sunken',bg='grey')
+
 
 #if phase button is double pressed
 def trigger_op_button_double_click(event):
