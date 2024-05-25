@@ -97,7 +97,7 @@ def open_input_operation_parameters_form():
             font_bold = Font(family="Helvetica", size=10,weight="bold")
   
             elements.reverse()
-            elements.append(("TLE Filename",mission[button_index].get_orbital_elements().get_tle_filename().split('\\')[-1]))
+            elements.append(("TLE Filename",mission[button_index].get_orbital_elements().get_tle_filename().split('/')[-1]))
             elements.append(("Satellite Name",mission[button_index].get_orbital_elements().get_satellite_name()))
             frame_under_left.pack_propagate(False)             
             
