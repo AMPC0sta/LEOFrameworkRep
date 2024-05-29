@@ -16,17 +16,29 @@ screen.geometry('1600x800')
 
 
 # auxiliary GUI functions
+def read_frame_title(frame):
+    # Check if the frame has a title label attribute
+    if hasattr(frame, 'title_label'):
+        
+        # Return the text of the title label
+        return (frame.title_label.cget("text"),frame.title_font)
+    else:
+        # Return None if there is no title label
+        return None
+
+
 def clear_frame(frame):
 
-    t = getattr(frame,'title_label',None)
-    
+    (t,f) = read_frame_title(frame)
     print(t)
-
     for widget in frame.winfo_children():
         widget.destroy()
 
-    if t:
-        t.pack(side='top')
+    if t != None:
+        lbl = Label(frame,text=t,font=f)
+        lbl.pack(side='top')
+        frame.title_label = lbl
+        frame.title_font = f
 
 
 
@@ -120,13 +132,6 @@ def open_input_operation_parameters_form():
             return
         
 
-        # Print the inputs for now (you can replace this with actual logic to handle the inputs)
-        #print("Instance Name:", instance_name)
-        #print("TLE File:", tle_file)
-        #print("Start Datetime:", start_datetime)
-        #print("End Datetime:", end_datetime)
-
-        #print(button_index)
         operations[button_index].config(text='Phase '+str(button_index+1) + '\n' + instance_name)
         
         if mission[button_index].get_phase_name() == None:
@@ -200,6 +205,9 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     if title:
         label = Label(frame, text=title, fg="black", font=("Arial", 12, "bold"))
         label.pack(padx=10, pady=5)  # Adjust padding as needed
+
+        frame.title_label = label
+        frame.title_font = ("Arial", 12, "bold")
     
     return frame
 
@@ -228,7 +236,7 @@ frame_under.grid_columnconfigure(1,weight=1)
 frame_under.grid_columnconfigure(2,weight=2)
 frame_under.grid_rowconfigure(0,weight=1)
 
-    frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
+frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
 frame_under_mid = create_frame(frame_under,0,1,title='Phase Parameters')
 frame_under_right = create_frame(frame_under,0,2,title='Motion Propagator Parameters')
 
