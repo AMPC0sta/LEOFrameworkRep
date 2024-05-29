@@ -16,6 +16,8 @@ screen.geometry('1600x800')
 
 
 # auxiliary GUI functions
+
+# read frame title and font to backup it
 def read_frame_title(frame):
     # Check if the frame has a title label attribute
     if hasattr(frame, 'title_label'):    
@@ -26,6 +28,7 @@ def read_frame_title(frame):
         return None
 
 
+# clear frame contents unless it's title
 def clear_frame(frame):
 
     (t,f) = read_frame_title(frame)
@@ -46,12 +49,16 @@ def trigger_op_button_one_click(event):
     for button in operations:
         button.config(relief='raised',bg='SystemButtonFace')
 
+
+    # selected button paints different
     event.widget.config(relief='sunken',bg='grey')
     clear_frame(frame_under_left)
     button_index = operations.index(event.widget)
 
     frame_under_left.pack_propagate(False)             
     
+
+    # copy object data to frame
     if mission[button_index].get_orbital_elements() != None:
         elements = mission[button_index].get_orbital_elements().to_show_on_widget()
     else:
@@ -100,8 +107,9 @@ def insert_mission_ops_button():
     button_ptr=button_ptr+1
     
     
+# pop form
 def open_input_operation_parameters_form():    
-    
+
     def select_tle_file():
         file_path = filedialog.askopenfilename(title="Select a TLE file", filetypes=(("TLE files", "*.tle"), ("All files", "*.*")))
         if file_path:
@@ -159,9 +167,7 @@ def open_input_operation_parameters_form():
         # Close the pop-up window
         popup.destroy()    
         
-    
-        
-    
+    # popup form raise up
     popup = Toplevel(screen)
     popup.geometry('500x350')
     popup.title("Setup Mission Phase")
@@ -216,8 +222,6 @@ def open_tle_file_dialog():
         # Add your code to handle the selected file here
 
 
-
-
 # Split screens horizontally
 screen.grid_rowconfigure(0,weight=1)
 screen.grid_rowconfigure(1,weight=40)
@@ -225,7 +229,6 @@ screen.grid_columnconfigure(0, weight=1)
 
 frame_top = create_frame(screen,0,0,title='Mission Timeline')
 frame_under = create_frame(screen,1,0)
-
 
 # Split bottom area vertically into 3 areas
 frame_under.grid_columnconfigure(0,weight=1)
@@ -237,8 +240,7 @@ frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
 frame_under_mid = create_frame(frame_under,0,1,title='Phase Parameters')
 frame_under_right = create_frame(frame_under,0,2,title='Motion Propagator Parameters')
 
-
-
+# Draw menus
 top_menu_bar = Menu(screen)
 
 file_group = Menu(top_menu_bar,tearoff=0)
@@ -250,7 +252,6 @@ file_group.add_command(label='Close',command=do_nothing)
 file_group.add_separator()
 file_group.add_command(label='Exit',command=screen.quit)
 top_menu_bar.add_cascade(label='Project',menu=file_group)
-
 
 prop_group = Menu(top_menu_bar,tearoff=0)   
 prop_group.add_command(label='Wizard',command=do_nothing)
@@ -264,7 +265,6 @@ o_elem_group = Menu(top_menu_bar,tearoff=0)
 o_elem_group.add_command(label='Keplerian Elements')
 o_elem_group.add_command(label='Load TLE',command=open_tle_file_dialog)
 top_menu_bar.add_cascade(label='Orbiting Object',menu=o_elem_group)
-
 
 gen_group = Menu(top_menu_bar,tearoff=0)
 gen_group.add_command(label='List of Points')
@@ -280,9 +280,7 @@ top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
 
 
-
-
-
+# looper
 screen.config(menu=top_menu_bar)
 screen.mainloop()
 
