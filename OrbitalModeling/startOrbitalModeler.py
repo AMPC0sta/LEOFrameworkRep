@@ -45,6 +45,11 @@ def clear_frame(frame):
         frame.title_label = lbl
         frame.title_font = f
 
+def print_pair_label_value_on_frame(frame,position,label,value,font_regular,font_bold):
+    pair_frame = Frame(frame)
+    pair_frame.pack(side=position,fill=X, pady=2)  # Pack each pair frame vertically
+    Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+    Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
 
 
 #if phase button is pressed
@@ -77,10 +82,11 @@ def trigger_op_button_one_click(event):
         elements.append(("Satellite Name",mission[button_index].get_orbital_elements().get_satellite_name()))
             
         for i, (label, value) in enumerate(elements):
-            pair_frame = Frame(frame_under_left)
-            pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
-            Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-            Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+            print_pair_label_value_on_frame(frame=frame_under_left,position=BOTTOM,label=label,value=value,font_regular=font_regular,font_bold=font_bold)
+            #pair_frame = Frame(frame_under_left)
+            #pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
+            #Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+            #Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
     else:
         clear_frame(frame_under_left)
         
