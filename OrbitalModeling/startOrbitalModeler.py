@@ -92,8 +92,10 @@ def trigger_op_button_one_click(event):
     
     font_regular = Font(family="Helvetica", size=10)
     font_bold = Font(family="Helvetica", size=10,weight="bold")
-    print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start,font_regular=font_regular,font_bold=font_bold)
-    print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end,font_regular=font_regular,font_bold=font_bold)
+    
+    if (start != None) and (end != None):
+        print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start,font_regular=font_regular,font_bold=font_bold)
+        print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end,font_regular=font_regular,font_bold=font_bold)
     
         
 
@@ -179,6 +181,9 @@ def open_input_operation_parameters_form():
             for i, (label, value) in enumerate(elements):
                 print_pair_label_value_on_frame(frame=frame_under_left,position=BOTTOM,label=label,value=value,font_regular=font_regular,font_bold=font_bold)
                         
+            print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start_datetime,font_regular=font_regular,font_bold=font_bold)
+            print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end_datetime,font_regular=font_regular,font_bold=font_bold)
+    
             
         # Close the pop-up window
         popup.destroy()    
