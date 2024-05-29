@@ -125,6 +125,7 @@ def open_input_operation_parameters_form():
         tle_file = tle_entry.get()
         start_datetime = start_date_entry.get_datetime()
         end_datetime = end_date_entry.get_datetime()
+        propagator = propagator_combobox.get()
         
         # Basic validation
         if not instance_name:
