@@ -18,13 +18,15 @@ screen.geometry('1600x800')
 # auxiliary GUI functions
 def clear_frame(frame):
 
-    t = frame.title_label
+    t = getattr(frame,'title_label',None)
     
+    print(t)
+
     for widget in frame.winfo_children():
         widget.destroy()
 
-    frame.title_label = t
-    frame.title_label.pack(side='top')
+    if t:
+        t.pack(side='top')
 
 
 
@@ -226,7 +228,7 @@ frame_under.grid_columnconfigure(1,weight=1)
 frame_under.grid_columnconfigure(2,weight=2)
 frame_under.grid_rowconfigure(0,weight=1)
 
-frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
+    frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
 frame_under_mid = create_frame(frame_under,0,1,title='Phase Parameters')
 frame_under_right = create_frame(frame_under,0,2,title='Motion Propagator Parameters')
 
