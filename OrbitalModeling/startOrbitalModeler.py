@@ -10,7 +10,7 @@ button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
 operations = []         #buttons array
 mission = []
-motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidValado']
+motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidVallado']
 
 
 
