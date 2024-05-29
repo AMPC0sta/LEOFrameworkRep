@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 from tkinter.font import Font
 from tkcalendar import *
 from widgets.datetime_picker import DateTimePicker
@@ -10,6 +10,9 @@ button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
 operations = []         #buttons array
 mission = []
+motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidValado']
+
+
 
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
@@ -189,6 +192,14 @@ def open_input_operation_parameters_form():
     Label(popup, text="End Datetime:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
     end_date_entry = DateTimePicker(popup)
     end_date_entry.grid(row=3, column=1, padx=5, pady=5)
+
+    Label(popup, text="Motion Propagator:").grid(row=4, column=0, padx=5, pady=5, sticky="e")
+    propagator_var = StringVar(value=motion_propagators_list[0])  # Default to the first option
+    propagator_combobox = ttk.Combobox(popup, textvariable=propagator_var, values=motion_propagators_list, state='readonly')
+    propagator_combobox.grid(row=4,column=1)
+
+    popup.propagator_combobox = propagator_combobox
+
 
     # Create an OK button to submit the input
     ok_button = Button(popup, text="OK", command=get_input)
