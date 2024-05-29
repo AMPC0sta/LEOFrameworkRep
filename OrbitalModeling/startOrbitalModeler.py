@@ -84,6 +84,9 @@ def trigger_op_button_one_click(event):
     else:
         clear_frame(frame_under_left)
         
+    
+    if start_datetime 
+        
 
 #if phase button is double pressed
 def trigger_op_button_double_click(event):

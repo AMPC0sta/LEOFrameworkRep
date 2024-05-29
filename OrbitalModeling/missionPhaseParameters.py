@@ -58,3 +58,27 @@ class MissionPhaseParameters:
         print(self.orbital_elements)
     
     
+    def set_start_datetime(self,start_datetime):
+        self.start_datetime = start_datetime
+        
+    
+    def set_end_datetime(self,end_datetime):
+        self.end_datetime = end_datetime
+        
+    
+    def set_motion_descriptor(self,motion_descriptor):
+        self.motion_descriptor = motion_descriptor
+        
+    
+    def get_start_datetime(self):
+        return self.start_datetime
+    
+    
+    def get_end_datetime(self):
+        return self.end_datetime
+    
+    
+    def get_motion_descriptor(self):
+        return self.motion_descriptor
+        
+    
