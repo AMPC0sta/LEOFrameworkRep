@@ -16,6 +16,7 @@ class MissionPhaseParameters:
         self.phase_name = phase_name
         self.tle_file = tle_file
         self.phase_position = phase_position
+        self.orbital_elements = None
         
     
     def read_object_name(self):

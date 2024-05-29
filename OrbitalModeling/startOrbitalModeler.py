@@ -1,9 +1,8 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 from tkinter.font import Font
-from  tkcalendar import *
+from tkcalendar import *
 from missionPhaseParameters import *
-
 
 button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
@@ -16,8 +15,16 @@ screen.geometry('1600x800')
 
 # auxiliary GUI functions
 def clear_frame(frame):
+
+    t = frame.title_label
+    
     for widget in frame.winfo_children():
         widget.destroy()
+
+    frame.title_label = t
+    frame.title_label.pack(side='top')
+
+
 
 #if phase button is pressed
 def trigger_op_button_one_click(event):
@@ -30,8 +37,10 @@ def trigger_op_button_one_click(event):
 
     frame_under_left.pack_propagate(False)             
     
-    print(button_index)
-    elements = mission[button_index].get_orbital_elements().to_show_on_widget()
+    if mission[button_index].get_orbital_elements() != None:
+        elements = mission[button_index].get_orbital_elements().to_show_on_widget()
+    else:
+        elements = None
     
     
     if elements != None:
