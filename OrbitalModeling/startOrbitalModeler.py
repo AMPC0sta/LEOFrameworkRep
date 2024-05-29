@@ -152,6 +152,9 @@ def open_input_operation_parameters_form():
             mission[button_index] = MissionPhaseParameters(phase_name=instance_name,tle_file=tle_file,phase_position=button_index)
             mission[button_index].load_TLE_data()
             mission[button_index].print_orbital_elements()
+            mission[button_index].set_start_datetime(start_datetime)
+            mission[button_index].set_end_datetime(end_datetime)
+            mission[button_index].set_motion_descriptor(propagator)
             elements = mission[button_index].get_orbital_elements().to_show_on_widget()
             
             font_regular = Font(family="Helvetica", size=10)
