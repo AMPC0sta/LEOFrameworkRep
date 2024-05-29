@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import filedialog, messagebox
 from tkinter.font import Font
 from tkcalendar import *
+from widgets.datetime_picker import DateTimePicker
+
 from missionPhaseParameters import *
 
 button_ptr=0            #create phase buttons auxiliary counter
@@ -97,8 +99,8 @@ def open_input_operation_parameters_form():
     def get_input():
         instance_name = name_entry.get()
         tle_file = tle_entry.get()
-        start_datetime = start_date_entry.get()
-        end_datetime = end_date_entry.get()
+        start_datetime = start_date_entry.get_datetime()
+        end_datetime = end_date_entry.get_datetime()
         
         # Basic validation
         if not instance_name:
@@ -169,11 +171,13 @@ def open_input_operation_parameters_form():
     tle_button.grid(row=1, column=2, padx=5, pady=5)
 
     Label(popup, text="Start Datetime:").grid(row=2, column=0, padx=5, pady=5, sticky="e")
-    start_date_entry = DateEntry(popup, selectmode='day', date_pattern='yyyy-mm-dd')
+    #start_date_entry = DateEntry(popup, selectmode='day', date_pattern='yyyy-mm-dd')
+    start_date_entry = DateTimePicker(popup)
     start_date_entry.grid(row=2, column=1, padx=5, pady=5)
 
     Label(popup, text="End Datetime:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
-    end_date_entry = DateEntry(popup, selectmode='day', date_pattern='yyyy-mm-dd')
+    #end_date_entry = DateEntry(popup, selectmode='day', date_pattern='yyyy-mm-dd')
+    end_date_entry = DateTimePicker(popup)
     end_date_entry.grid(row=3, column=1, padx=5, pady=5)
 
     # Create an OK button to submit the input
