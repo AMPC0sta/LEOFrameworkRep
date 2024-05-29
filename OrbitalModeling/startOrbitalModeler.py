@@ -61,6 +61,8 @@ def trigger_op_button_one_click(event):
     # selected button paints different
     event.widget.config(relief='sunken',bg='grey')
     clear_frame(frame_under_left)
+    clear_frame(frame_under_mid)
+    clear_frame(frame_under_right)
     button_index = operations.index(event.widget)
 
     frame_under_left.pack_propagate(False)             
@@ -85,6 +87,8 @@ def trigger_op_button_one_click(event):
             print_pair_label_value_on_frame(frame=frame_under_left,position=BOTTOM,label=label,value=value,font_regular=font_regular,font_bold=font_bold)
     else:
         clear_frame(frame_under_left)
+        clear_frame(frame_under_mid)
+        clear_frame(frame_under_right)
         
     start = mission[button_index].get_start_datetime()
     end = mission[button_index].get_end_datetime()
