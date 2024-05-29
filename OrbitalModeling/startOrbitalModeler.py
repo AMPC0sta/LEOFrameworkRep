@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import filedialog, messagebox
 from tkinter.font import Font
 from  tkcalendar import *
-
 from missionPhaseParameters import *
 
 
@@ -14,13 +13,43 @@ mission = []
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
+
+# auxiliary GUI functions
+def clear_frame(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+
 #if phase button is pressed
 def trigger_op_button_one_click(event):
     for button in operations:
         button.config(relief='raised',bg='SystemButtonFace')
 
     event.widget.config(relief='sunken',bg='grey')
+    clear_frame(frame_under_left)
+    button_index = operations.index(event.widget)
 
+    frame_under_left.pack_propagate(False)             
+    
+    print(button_index)
+    elements = mission[button_index].get_orbital_elements().to_show_on_widget()
+    
+    
+    if elements != None:
+        font_regular = Font(family="Helvetica", size=10)
+        font_bold = Font(family="Helvetica", size=10,weight="bold")
+  
+        elements.reverse()
+        elements.append(("TLE Filename",mission[button_index].get_orbital_elements().get_tle_filename().split('/')[-1]))
+        elements.append(("Satellite Name",mission[button_index].get_orbital_elements().get_satellite_name()))
+            
+        for i, (label, value) in enumerate(elements):
+            pair_frame = Frame(frame_under_left)
+            pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
+            Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+            Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+    else:
+        clear_frame(frame_under_left)
+        
 
 #if phase button is double pressed
 def trigger_op_button_double_click(event):
@@ -99,6 +128,7 @@ def open_input_operation_parameters_form():
             elements.reverse()
             elements.append(("TLE Filename",mission[button_index].get_orbital_elements().get_tle_filename().split('/')[-1]))
             elements.append(("Satellite Name",mission[button_index].get_orbital_elements().get_satellite_name()))
+           
             frame_under_left.pack_propagate(False)             
             
             for i, (label, value) in enumerate(elements):
