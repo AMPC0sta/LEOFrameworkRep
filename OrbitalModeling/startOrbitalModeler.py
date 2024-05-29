@@ -97,7 +97,9 @@ def trigger_op_button_one_click(event):
         print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start,font_regular=font_regular,font_bold=font_bold)
         print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end,font_regular=font_regular,font_bold=font_bold)
     
-        
+    if propagator != None:
+        print_pair_label_value_on_frame(frame=frame_under_right,position=TOP,label='Motion Propagator',value=propagator,font_regular=font_regular,font_bold=font_bold)
+
 
 #if phase button is double pressed
 def trigger_op_button_double_click(event):
@@ -184,6 +186,7 @@ def open_input_operation_parameters_form():
             print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start_datetime,font_regular=font_regular,font_bold=font_bold)
             print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end_datetime,font_regular=font_regular,font_bold=font_bold)
     
+            print_pair_label_value_on_frame(frame=frame_under_right,position=TOP,label='Motion Propagator',value=propagator,font_regular=font_regular,font_bold=font_bold)
             
         # Close the pop-up window
         popup.destroy()    
