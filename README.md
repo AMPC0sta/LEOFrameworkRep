@@ -60,6 +60,9 @@ OrbitalModeling    --> GUI to parameterize and generate new orbits and propagato
 TLE_files          --> Data folder with two element lines files (TLE's)
 
 
+widgets            --> Auxiliary GUI objects
+   datetime_picker.py           -- Custom widget to pick datetime YYYYMMDDHH24MI
+
 Images & Videos:     --> Folder with the resultant images, higher the X, recent the code
   draft_animation_X.mp4         -- Videos with visualizar sequences.
   orbit-visualizer-draft-X.png  
