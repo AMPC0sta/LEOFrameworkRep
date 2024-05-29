@@ -83,10 +83,6 @@ def trigger_op_button_one_click(event):
             
         for i, (label, value) in enumerate(elements):
             print_pair_label_value_on_frame(frame=frame_under_left,position=BOTTOM,label=label,value=value,font_regular=font_regular,font_bold=font_bold)
-            #pair_frame = Frame(frame_under_left)
-            #pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
-            #Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-            #Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
     else:
         clear_frame(frame_under_left)
         
@@ -96,12 +92,8 @@ def trigger_op_button_one_click(event):
     
     font_regular = Font(family="Helvetica", size=10)
     font_bold = Font(family="Helvetica", size=10,weight="bold")
-    phase_pair_frame = Frame(frame_under_mid)
-    phase_pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
-    Label(phase_pair_frame,text=f"Start Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-    Label(phase_pair_frame,text=start,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
-    Label(phase_pair_frame,text=f"End Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-    Label(phase_pair_frame,text=end,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+    print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='Start Datetime:',value=start,font_regular=font_regular,font_bold=font_bold)
+    print_pair_label_value_on_frame(frame=frame_under_mid,position=TOP,label='End Datetime:',value=end,font_regular=font_regular,font_bold=font_bold)
     
         
 
@@ -185,25 +177,8 @@ def open_input_operation_parameters_form():
             frame_under_left.pack_propagate(False)             
             
             for i, (label, value) in enumerate(elements):
-                pair_frame = Frame(frame_under_left)
-                pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
-                Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-                Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
-            
-            frame_under_mid.pack_propagate(False)             
-            font_regular = Font(family="Helvetica", size=10)
-            font_bold = Font(family="Helvetica", size=10,weight="bold")
-            
-            phase_pair_frame = Frame(frame_under_mid)
-            phase_pair_frame.pack(side=TOP,fill=X, pady=2)  # Pack each pair frame vertically
-            Label(phase_pair_frame,text=f"Start Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-            Label(phase_pair_frame,text=start_datetime,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
-            
-            phase_pair_frame = Frame(frame_under_mid)
-            phase_pair_frame.pack(side=TOP,fill=X, pady=2)  # Pack each pair frame vertically
-            Label(phase_pair_frame,text=f"End Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
-            Label(phase_pair_frame,text=end_datetime,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
-            
+                print_pair_label_value_on_frame(frame=frame_under_left,position=BOTTOM,label=label,value=value,font_regular=font_regular,font_bold=font_bold)
+                        
             
         # Close the pop-up window
         popup.destroy()    
