@@ -17,7 +17,9 @@ class MissionPhaseParameters:
         self.tle_file = tle_file
         self.phase_position = phase_position
         self.orbital_elements = None
-        
+        self.start_datetime = None
+        self.end_datetime = None
+        self.motion_descriptor = None
     
     def read_object_name(self):
         if self.tle_file != None:

@@ -84,8 +84,19 @@ def trigger_op_button_one_click(event):
     else:
         clear_frame(frame_under_left)
         
+    start = mission[button_index].get_start_datetime()
+    end = mission[button_index].get_end_datetime()
+    propagator = mission[button_index].get_motion_descriptor()
     
-    if start_datetime 
+    font_regular = Font(family="Helvetica", size=10)
+    font_bold = Font(family="Helvetica", size=10,weight="bold")
+    phase_pair_frame = Frame(frame_under_mid)
+    phase_pair_frame.pack(side=BOTTOM,fill=X, pady=2)  # Pack each pair frame vertically
+    Label(phase_pair_frame,text=f"Start Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+    Label(phase_pair_frame,text=start,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+    Label(phase_pair_frame,text=f"End Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+    Label(phase_pair_frame,text=end,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+    
         
 
 #if phase button is double pressed
@@ -130,6 +141,7 @@ def open_input_operation_parameters_form():
         end_datetime = end_date_entry.get_datetime()
         propagator = propagator_combobox.get()
         
+                
         # Basic validation
         if not instance_name:
             messagebox.showerror("Input Error", "Instance Name is required.")
@@ -145,9 +157,8 @@ def open_input_operation_parameters_form():
             messagebox.showerror("Input Error", "End Datetime is required.")
             return
         
-
         operations[button_index].config(text='Phase '+str(button_index+1) + '\n' + instance_name)
-        
+                
         if mission[button_index].get_phase_name() == None:
             mission[button_index] = MissionPhaseParameters(phase_name=instance_name,tle_file=tle_file,phase_position=button_index)
             mission[button_index].load_TLE_data()
@@ -155,6 +166,7 @@ def open_input_operation_parameters_form():
             mission[button_index].set_start_datetime(start_datetime)
             mission[button_index].set_end_datetime(end_datetime)
             mission[button_index].set_motion_descriptor(propagator)
+
             elements = mission[button_index].get_orbital_elements().to_show_on_widget()
             
             font_regular = Font(family="Helvetica", size=10)
@@ -172,6 +184,19 @@ def open_input_operation_parameters_form():
                 Label(pair_frame,text=f"{label}:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
                 Label(pair_frame,text=value,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
             
+            frame_under_mid.pack_propagate(False)             
+            font_regular = Font(family="Helvetica", size=10)
+            font_bold = Font(family="Helvetica", size=10,weight="bold")
+            
+            phase_pair_frame = Frame(frame_under_mid)
+            phase_pair_frame.pack(side=TOP,fill=X, pady=2)  # Pack each pair frame vertically
+            Label(phase_pair_frame,text=f"Start Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+            Label(phase_pair_frame,text=start_datetime,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
+            
+            phase_pair_frame = Frame(frame_under_mid)
+            phase_pair_frame.pack(side=TOP,fill=X, pady=2)  # Pack each pair frame vertically
+            Label(phase_pair_frame,text=f"End Datetime:",font=font_bold).pack(anchor='w',side=LEFT,padx=0)
+            Label(phase_pair_frame,text=end_datetime,font=font_regular).pack(anchor='w',side=RIGHT,padx=0)
             
             
         # Close the pop-up window
