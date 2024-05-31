@@ -235,6 +235,12 @@ def do_nothing():
     pass
 
 
+def generate_motion():
+    
+    if len(mission)==1:
+        orb = mission[0].get_orbital_data()
+        
+
 # create frames with labels
 def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     frame = Frame(root, bg="white", bd=1, relief=RAISED)
@@ -306,7 +312,7 @@ top_menu_bar.add_cascade(label='Mission Setup',menu=prop_group)
 
 gen_group = Menu(top_menu_bar,tearoff=0)
 gen_group.add_command(label='Timeline Verification')
-gen_group.add_command(label='Generate Motion')
+gen_group.add_command(label='Generate Motion',command=generate_motion)
 gen_group.add_separator()
 gen_group.add_command(label='Call Motion Visualizer')
 top_menu_bar.add_cascade(label='Execute',menu=gen_group)

@@ -82,5 +82,8 @@ class MissionPhaseParameters:
     
     def get_motion_descriptor(self):
         return self.motion_descriptor
+    
+    def get_orbital_data(self):
+        return self.orbital_data
         
     
