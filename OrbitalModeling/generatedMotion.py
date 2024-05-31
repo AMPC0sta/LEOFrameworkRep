@@ -13,7 +13,7 @@ class GeneratedMotion:
         return self.id
     
     
-    def get_tle_file(self):
+    def get_tle_filename(self):
         return self.tle_file
     
     

@@ -93,7 +93,7 @@ class MissionPhaseParameters:
     
     
     def get_tle_filename(self):
-        return self.tle_file.split('\n')[len(self.tle_file.split)]
+        return self.tle_file.split('\n')[len(self.tle_file.split('\n'))-1]
     
     
         

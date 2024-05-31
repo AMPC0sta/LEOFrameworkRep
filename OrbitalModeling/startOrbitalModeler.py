@@ -242,6 +242,7 @@ def do_nothing():
 def generate_motion():
     
     global rv_coordinates
+    global output_ptr
     
     rv_coordinates = []
     
@@ -252,18 +253,22 @@ def generate_motion():
         tle_name = mission[0].get_tle_filename()
         now = datetime.now().strftime('%Y%m%d%H%M%S')
         
-        timestep = timedelta(minutes=1)
-        start_time = mission[0].get_start_datetime()
+        time_step = timedelta(minutes=1)
+        print(mission[0].get_start_datetime())
+        start_time = datetime.strptime(mission[0].get_start_datetime(),'%Y-%m-%d %H:%M:%S')
         current_time = start_time
-        end_time = mission[0].get_end_datetime()
+        end_time = datetime.strptime(mission[0].get_end_datetime(),'%Y-%m-%d %H:%M:%S')
         
         while current_time <= end_time:
             pos, vel = orb.get_position(current_time)
-            rv_coordinates.append(current_time,pos,vel)
-            current_time += timestep
+            rv_coordinates.append((current_time,pos,vel))
+            current_time += time_step
+            print(current_time,pos,vel)
     
-    output[output_ptr].append(GeneratedMotion(id=sat_name+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+    output.append(GeneratedMotion(id=sat_name+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
     output_ptr = output_ptr + 1
+    
+    create_table(table_frame, output)
 
     
 
@@ -413,7 +418,7 @@ data = [
     ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
     ]
 
-create_table(table_frame, data)
+create_table(table_frame, output)
 
 # looper
 screen.config(menu=top_menu_bar)
