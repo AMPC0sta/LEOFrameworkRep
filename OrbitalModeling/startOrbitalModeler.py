@@ -320,21 +320,53 @@ custom_group.add_command(label='Close Model',command=do_nothing)
 top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
 
+def see_action(row,column):
+    print("Seeing (",row,",",column,")")
+
+
+def del_action(row,column):
+    print("Deleting (",row,",",column,")")
+
 # Function to populate the frame with a table
 def create_table(frame, data):
     
     header_font = Font(weight='bold')  # Create a bold font
+    
+    l = Label(frame, text="Generation.ID", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=0, sticky="nsew")
+    
+    l = Label(frame, text="TLE Files", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=1, sticky="nsew")
+    
+    l = Label(frame, text="Start Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=2, sticky="nsew")
+    
+    l = Label(frame, text="End Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=3, sticky="nsew")
+    
+    l = Label(frame, text="Visualizer", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=4, sticky="nsew")
+    
+    l = Label(frame, text="Delete", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=5, sticky="nsew")
+    
+    
     for i, row in enumerate(data):
         for j, value in enumerate(row):
-            if i == 0:
-                label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-            else:
-                label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
-            label.grid(row=i, column=j, sticky="nsew")
+            label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
+            label.grid(row=i+1, column=j, sticky="nsew")
+            
+        button = Button(frame, text="See",command=lambda: see_action(i+1,j))
+        button.grid(row=i+1, column=4, sticky="nsew", padx=5, pady=5)
+            
+        button = Button(frame, text="Delete",command=lambda: del_action(i+1,j))
+        button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
 
     # Make columns expand equally
     for j in range(len(data[0])):
         frame.grid_columnconfigure(j, weight=1)
+
+
 
 frame_to_data_output.pack_propagate(False)
 table_frame = Frame(frame_to_data_output, bg='lightgray')
@@ -342,13 +374,11 @@ table_frame.pack(side='bottom',padx=10, pady=10, fill='x', expand=True,anchor='s
 
 # Define the data to be displayed in the table
 data = [
-    ("Generation.ID", "TLE File", "Start Time","End Time","See","Delete"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
-]
+    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
+    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
+    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
+    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
+    ]
 
 create_table(table_frame, data)
 
