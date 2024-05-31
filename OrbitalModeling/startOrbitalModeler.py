@@ -270,11 +270,19 @@ frame_under = create_frame(screen,1,0)
 frame_under.grid_columnconfigure(0,weight=1)
 frame_under.grid_columnconfigure(1,weight=1)
 frame_under.grid_columnconfigure(2,weight=2)
-frame_under.grid_rowconfigure(0,weight=1)
+frame_under.grid_rowconfigure(0,weight=2)
 
 frame_under_left = create_frame(frame_under,0,0,title='Satellite Parameters')
 frame_under_mid = create_frame(frame_under,0,1,title='Phase Parameters')
-frame_under_right = create_frame(frame_under,0,2,title='Motion Propagator Parameters')
+frame_under_r = create_frame(frame_under,0,2)
+
+frame_under_r.grid_rowconfigure(0,weight=30)
+frame_under_r.grid_rowconfigure(1,weight=90)
+frame_under_r.grid_columnconfigure(0,weight=1)
+
+frame_under_right = create_frame(frame_under_r,0,0,title='Motion Propagator Parameters')
+frame_to_data_output = create_frame(frame_under_r,1,0,title='Output')
+
 
 # Draw menus
 top_menu_bar = Menu(screen)
