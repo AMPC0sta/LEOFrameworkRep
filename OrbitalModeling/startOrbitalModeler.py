@@ -265,7 +265,7 @@ def generate_motion():
             current_time += time_step
             print(current_time,pos,vel)
     
-    output.append(GeneratedMotion(id=sat_name+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+    output.append(GeneratedMotion(id="ID-"+sat_name+"."+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
     output_ptr = output_ptr + 1
     
     create_table(table_frame, output)
@@ -293,6 +293,56 @@ def open_tle_file_dialog():
     if file_path:
         print("Selected file:", file_path)
         # Add your code to handle the selected file here
+
+
+
+def see_action(row,column):
+    print("Seeing (",row,",",column,")")
+
+
+def del_action(row,column):
+    print("Deleting (",row,",",column,")")
+
+# Function to populate the frame with a table
+def create_table(frame, data):
+    
+    header_font = Font(weight='bold')  # Create a bold font
+    
+    l = Label(frame, text="Generation.ID", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=0, sticky="nsew")
+    
+    l = Label(frame, text="TLE Files", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=1, sticky="nsew")
+    
+    l = Label(frame, text="Start Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=2, sticky="nsew")
+    
+    l = Label(frame, text="End Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=3, sticky="nsew")
+    
+    l = Label(frame, text="Visualizer", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=4, sticky="nsew")
+    
+    l = Label(frame, text="Delete", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=5, sticky="nsew")
+    
+    
+    for i, row in enumerate(output):
+        for j, value in enumerate([row.get_id(),row.get_tle_filename(),row.get_start_datetime(),row.get_end_datetime()]):
+            label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
+            label.grid(row=i+1, column=j, sticky="nsew")
+            
+        button = Button(frame, text="See",command=lambda: see_action(i,4))
+        button.grid(row=i+1, column=4, sticky="nsew", padx=5, pady=5)
+            
+        button = Button(frame, text="Delete",command=lambda: del_action(i,5))
+        button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
+
+    # Make columns expand equally
+    if output != []:
+        for j in range(len(output[0].get_id())):
+            frame.grid_columnconfigure(j, weight=1)
+
 
 
 # Split screens horizontally
@@ -356,67 +406,9 @@ custom_group.add_command(label='Save As',command=do_nothing)
 custom_group.add_command(label='Close Model',command=do_nothing)
 top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
-
-def see_action(row,column):
-    print("Seeing (",row,",",column,")")
-
-
-def del_action(row,column):
-    print("Deleting (",row,",",column,")")
-
-# Function to populate the frame with a table
-def create_table(frame, data):
-    
-    header_font = Font(weight='bold')  # Create a bold font
-    
-    l = Label(frame, text="Generation.ID", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=0, sticky="nsew")
-    
-    l = Label(frame, text="TLE Files", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=1, sticky="nsew")
-    
-    l = Label(frame, text="Start Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=2, sticky="nsew")
-    
-    l = Label(frame, text="End Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=3, sticky="nsew")
-    
-    l = Label(frame, text="Visualizer", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=4, sticky="nsew")
-    
-    l = Label(frame, text="Delete", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
-    l.grid(row=0, column=5, sticky="nsew")
-    
-    
-    for i, row in enumerate(output):
-        for j, value in enumerate([row.get_id(),row.get_tle_filename(),row.get_start_datetime(),row.get_end_datetime()]):
-            label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
-            label.grid(row=i+1, column=j, sticky="nsew")
-            
-        button = Button(frame, text="See",command=lambda: see_action(i,j))
-        button.grid(row=i+1, column=4, sticky="nsew", padx=5, pady=5)
-            
-        button = Button(frame, text="Delete",command=lambda: del_action(i,j))
-        button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
-
-    # Make columns expand equally
-    if output != []:
-        for j in range(len(output[0].get_id())):
-            frame.grid_columnconfigure(j, weight=1)
-
-
-
 frame_to_data_output.pack_propagate(False)
 table_frame = Frame(frame_to_data_output, bg='lightgray')
 table_frame.pack(side='bottom',padx=10, pady=10, fill='x', expand=True,anchor='s')
-
-# Define the data to be displayed in the table
-data = [
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
-    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59"),
-    ]
 
 create_table(table_frame, output)
 

@@ -93,7 +93,8 @@ class MissionPhaseParameters:
     
     
     def get_tle_filename(self):
-        return self.tle_file.split('\n')[len(self.tle_file.split('\n'))-1]
+        file = os.path.basename(self.tle_file)
+        return file
     
     
         
