@@ -281,7 +281,7 @@ frame_under_r.grid_rowconfigure(1,weight=90)
 frame_under_r.grid_columnconfigure(0,weight=1)
 
 frame_under_right = create_frame(frame_under_r,0,0,title='Motion Propagator Parameters')
-frame_to_data_output = create_frame(frame_under_r,1,0,title='Output')
+frame_to_data_output = create_frame(frame_under_r,1,0,title='Timeline Generated Motion')
 
 
 # Draw menus
@@ -320,6 +320,35 @@ custom_group.add_command(label='Close Model',command=do_nothing)
 top_menu_bar.add_cascade(label='Custom Models',menu=custom_group)
 
 
+# Function to populate the frame with a table
+def create_table(frame, data):
+    
+    header_font = Font(weight='bold')  # Create a bold font
+    for i, row in enumerate(data):
+        for j, value in enumerate(row):
+            if i == 0:
+                label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+            else:
+                label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
+            label.grid(row=i, column=j, sticky="nsew")
+
+    # Make columns expand equally
+    for j in range(len(data[0])):
+        frame.grid_columnconfigure(j, weight=1)
+
+frame_to_data_output.pack_propagate(False)
+table_frame = Frame(frame_to_data_output, bg='lightgray')
+table_frame.pack(side='bottom',padx=10, pady=10, fill='x', expand=True,anchor='s')
+
+# Define the data to be displayed in the table
+data = [
+    ("Name", "Age", "City"),
+    ("Alice", "24", "New York"),
+    ("Bob", "30", "San Francisco"),
+    ("Charlie", "22", "Boston"),
+]
+
+create_table(table_frame, data)
 
 # looper
 screen.config(menu=top_menu_bar)
