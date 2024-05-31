@@ -281,7 +281,7 @@ frame_under_r.grid_rowconfigure(1,weight=90)
 frame_under_r.grid_columnconfigure(0,weight=1)
 
 frame_under_right = create_frame(frame_under_r,0,0,title='Motion Propagator Parameters')
-frame_to_data_output = create_frame(frame_under_r,1,0,title='Timeline Generated Motion')
+frame_to_data_output = create_frame(frame_under_r,1,0,title='Output Dashboard:Simulation Results')
 
 
 # Draw menus
@@ -342,10 +342,8 @@ table_frame.pack(side='bottom',padx=10, pady=10, fill='x', expand=True,anchor='s
 
 # Define the data to be displayed in the table
 data = [
-    ("Name", "Age", "City"),
-    ("Alice", "24", "New York"),
-    ("Bob", "30", "San Francisco"),
-    ("Charlie", "22", "Boston"),
+    ("Generation.ID", "TLE File", "Start Time","End Buttom","See","Delete"),
+    ("ISS.20230531131000", "iss_zandya_0105.tle", "2024/05/29 00:00","2024/05/31 23:59","O","D"),
 ]
 
 create_table(table_frame, data)
