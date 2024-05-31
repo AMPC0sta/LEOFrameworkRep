@@ -262,7 +262,8 @@ def generate_motion():
             rv_coordinates.append(current_time,pos,vel)
             current_time += timestep
     
-    output[output_ptr].append(GeneratedMotion(id=now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+    output[output_ptr].append(GeneratedMotion(id=sat_name+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+    output_ptr = output_ptr + 1
 
     
 
@@ -382,20 +383,21 @@ def create_table(frame, data):
     l.grid(row=0, column=5, sticky="nsew")
     
     
-    for i, row in enumerate(data):
-        for j, value in enumerate(row):
+    for i, row in enumerate(output):
+        for j, value in enumerate([row.get_id(),row.get_tle_filename(),row.get_start_datetime(),row.get_end_datetime()]):
             label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
             label.grid(row=i+1, column=j, sticky="nsew")
             
-        button = Button(frame, text="See",command=lambda: see_action(i+1,j))
+        button = Button(frame, text="See",command=lambda: see_action(i,j))
         button.grid(row=i+1, column=4, sticky="nsew", padx=5, pady=5)
             
-        button = Button(frame, text="Delete",command=lambda: del_action(i+1,j))
+        button = Button(frame, text="Delete",command=lambda: del_action(i,j))
         button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
 
     # Make columns expand equally
-    for j in range(len(data[0])):
-        frame.grid_columnconfigure(j, weight=1)
+    if output != []:
+        for j in range(len(output[0].get_id())):
+            frame.grid_columnconfigure(j, weight=1)
 
 
 

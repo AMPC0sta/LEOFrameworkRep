@@ -25,7 +25,7 @@ class GeneratedMotion:
         return self.end_datetime
     
     
-    def get_motion_list(self)
+    def get_motion_list(self):
         return self.motion_list
     
     
