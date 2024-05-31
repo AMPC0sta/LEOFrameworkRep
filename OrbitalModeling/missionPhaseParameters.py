@@ -83,7 +83,18 @@ class MissionPhaseParameters:
     def get_motion_descriptor(self):
         return self.motion_descriptor
     
+    
     def get_orbital_data(self):
         return self.orbital_data
+    
+    
+    def get_satellite_name(self):
+        return self.object_name
+    
+    
+    def get_tle_filename(self):
+        return self.tle_file.split('\n')[len(self.tle_file.split)]
+    
+    
         
     

@@ -7,13 +7,16 @@ from datetime import datetime,timedelta
 from pyorbital.orbital import Orbital
 
 from missionPhaseParameters import *
+from generatedMotion import *
 
 button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
+output_ptr=0
 operations = []         #buttons array
 mission = []
 motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidVallado']
 rv_coordinates = []
+output = []
 
 
 
@@ -242,19 +245,26 @@ def generate_motion():
     
     rv_coordinates = []
     
+    
     if len(mission)==1:
         orb = mission[0].get_orbital_data()
+        sat_name = mission[0].get_satellite_name()
+        tle_name = mission[0].get_tle_filename()
+        now = datetime.now().strftime('%Y%m%d%H%M%S')
         
         timestep = timedelta(minutes=1)
-        current_time = mission[0].get_start_datetime()
+        start_time = mission[0].get_start_datetime()
+        current_time = start_time
         end_time = mission[0].get_end_datetime()
         
         while current_time <= end_time:
             pos, vel = orb.get_position(current_time)
             rv_coordinates.append(current_time,pos,vel)
             current_time += timestep
-            
-            
+    
+    output[output_ptr].append(GeneratedMotion(id=now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+
+    
 
 # create frames with labels
 def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
