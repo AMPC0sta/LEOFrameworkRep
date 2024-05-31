@@ -3,6 +3,8 @@ from tkinter import filedialog, messagebox, ttk
 from tkinter.font import Font
 from tkcalendar import *
 from widgets.datetime_picker import DateTimePicker
+from datetime import datetime,timedelta
+from pyorbital.orbital import Orbital
 
 from missionPhaseParameters import *
 
@@ -11,6 +13,7 @@ button_index=0          #clicked button index
 operations = []         #buttons array
 mission = []
 motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidVallado']
+rv_coordinates = []
 
 
 
@@ -45,6 +48,7 @@ def clear_frame(frame):
         frame.title_label = lbl
         frame.title_font = f
 
+
 def print_pair_label_value_on_frame(frame,position,label,value,font_regular,font_bold):
     pair_frame = Frame(frame)
     pair_frame.pack(side=position,fill=X, pady=2)  # Pack each pair frame vertically
@@ -57,7 +61,6 @@ def trigger_op_button_one_click(event):
     for button in operations:
         button.config(relief='raised',bg='SystemButtonFace')
 
-
     # selected button paints different
     event.widget.config(relief='sunken',bg='grey')
     clear_frame(frame_under_left)
@@ -67,13 +70,11 @@ def trigger_op_button_one_click(event):
 
     frame_under_left.pack_propagate(False)             
     
-
     # copy object data to frame
     if mission[button_index].get_orbital_elements() != None:
         elements = mission[button_index].get_orbital_elements().to_show_on_widget()
     else:
         elements = None
-    
     
     if elements != None:
         font_regular = Font(family="Helvetica", size=10)
@@ -237,9 +238,23 @@ def do_nothing():
 
 def generate_motion():
     
+    global rv_coordinates
+    
+    rv_coordinates = []
+    
     if len(mission)==1:
         orb = mission[0].get_orbital_data()
         
+        timestep = timedelta(minutes=1)
+        current_time = mission[0].get_start_datetime()
+        end_time = mission[0].get_end_datetime()
+        
+        while current_time <= end_time:
+            pos, vel = orb.get_position(current_time)
+            rv_coordinates.append(current_time,pos,vel)
+            current_time += timestep
+            
+            
 
 # create frames with labels
 def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
