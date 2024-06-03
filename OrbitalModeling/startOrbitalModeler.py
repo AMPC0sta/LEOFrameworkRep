@@ -5,6 +5,7 @@ from tkcalendar import *
 from widgets.datetime_picker import DateTimePicker
 from datetime import datetime,timedelta
 from pyorbital.orbital import Orbital
+import pandas as pd
 
 from missionPhaseParameters import *
 from generatedMotion import *
@@ -34,7 +35,7 @@ def read_frame_title(frame):
         return (frame.title_label.cget("text"),frame.title_font)
     else:
         # Return None if there is no title label
-        return None
+        return None,None
 
 
 # clear frame contents unless it's title
@@ -254,7 +255,6 @@ def generate_motion():
         now = datetime.now().strftime('%Y%m%d%H%M%S')
         
         time_step = timedelta(minutes=1)
-        print(mission[0].get_start_datetime())
         start_time = datetime.strptime(mission[0].get_start_datetime(),'%Y-%m-%d %H:%M:%S')
         current_time = start_time
         end_time = datetime.strptime(mission[0].get_end_datetime(),'%Y-%m-%d %H:%M:%S')
@@ -263,7 +263,7 @@ def generate_motion():
             pos, vel = orb.get_position(current_time)
             rv_coordinates.append((current_time,pos,vel))
             current_time += time_step
-            print(current_time,pos,vel)
+            #print(current_time,pos,vel)
     
     output.append(GeneratedMotion(id="ID-"+sat_name+"."+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
     output_ptr = output_ptr + 1
@@ -301,47 +301,60 @@ def see_action(row,column):
 
 
 def del_action(row,column):
-    print("Deleting (",row,",",column,")")
+    global output, output_ptr
+    
+    del output[row]
+    output_ptr = output_ptr - 1
+    
+    clear_frame(table_frame)        
+    create_table(table_frame,output)
 
 # Function to populate the frame with a table
-def create_table(frame, data):
+def create_table(frame, output):
     
     header_font = Font(weight='bold')  # Create a bold font
     
-    l = Label(frame, text="Generation.ID", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="#", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=0, sticky="nsew")
     
-    l = Label(frame, text="TLE Files", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="Generation.ID", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=1, sticky="nsew")
     
-    l = Label(frame, text="Start Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="TLE Files", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=2, sticky="nsew")
     
-    l = Label(frame, text="End Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="Start Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=3, sticky="nsew")
     
-    l = Label(frame, text="Visualizer", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="End Motion", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=4, sticky="nsew")
     
-    l = Label(frame, text="Delete", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l = Label(frame, text="Visualizer", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
     l.grid(row=0, column=5, sticky="nsew")
+    
+    l = Label(frame, text="Delete", borderwidth=1, relief="solid", padx=10, pady=5,font=header_font)
+    l.grid(row=0, column=6, sticky="nsew")
     
     
     for i, row in enumerate(output):
+        
+        label = Label(frame, text=str(i), borderwidth=1, relief="solid", padx=10, pady=5)
+        label.grid(row=i+1, column=0, sticky="nsew")
+        
         for j, value in enumerate([row.get_id(),row.get_tle_filename(),row.get_start_datetime(),row.get_end_datetime()]):
             label = Label(frame, text=value, borderwidth=1, relief="solid", padx=10, pady=5)
-            label.grid(row=i+1, column=j, sticky="nsew")
+            label.grid(row=i+1, column=j+1, sticky="nsew")
             
-        button = Button(frame, text="See",command=lambda: see_action(i,4))
-        button.grid(row=i+1, column=4, sticky="nsew", padx=5, pady=5)
-            
-        button = Button(frame, text="Delete",command=lambda: del_action(i,5))
+        button = Button(frame, text="See",command=lambda i=i: see_action(i,4))
         button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
+            
+        button = Button(frame, text="Delete",command=lambda i=i: del_action(i,5))
+        button.grid(row=i+1, column=6, sticky="nsew", padx=5, pady=5)
 
     # Make columns expand equally
-    if output != []:
-        for j in range(len(output[0].get_id())):
-            frame.grid_columnconfigure(j, weight=1)
+    for j in range(5):
+        frame.grid_columnconfigure(j, weight=1)
+        
 
 
 
