@@ -46,32 +46,25 @@ satellite_on = False
 external_motion_points = []
 external_orbit = False
 
+def read_tuples_from_file(filename):
+    tuples_array = []
+    with open(filename, 'r') as file:
+        for line in file:
+            # Remove the newline character and split the line by commas
+            line = line.strip()
+            if line:  # Check if the line is not empty
+                # Split the line by commas and convert each element to the appropriate type
+                tuple_elements = eval(line)  # Using eval to parse the line as a tuple
+                tuples_array.append(tuple(tuple_elements))  # Append the tuple to the array
+    return tuples_array
+
 
 if (len(sys.argv)) == 3:
     temp_file_path = sys.argv[1]
     period = float(sys.argv[2])
     # Read the contents of the temporary file
-    with open(temp_file_path, "r") as temp_file:
-        motion_str = temp_file.read()
-
-    print("FIRST",motion_str)
-    # Split the contents into individual lines
-    #motion_lines = motion_str.split("\n")
-
-    # Parse each line into a tuple and create a list of tuples
-    external_motion_points = []
-    #for line in motion_lines:
-    list = ast.literal_eval(f"[{motion_str}]")
-    for p in enumerate (list):
-        #for l in enumerate(line):
-        print("point=",p,"\n")
-        x,y,z,t = p
-        external_motion_points.append((x,y,z,t))
-        #if line:
-        #    (x,y,z,t) = line
-        #    elements = line.split(",")
-            #converted_elements = [float(elem) for elem in elements]
-        #    external_motion_points.append((x,y,z,y))
+    
+    external_motion_points = read_tuples_from_file(temp_file_path)
             
     external_orbit = True
 
@@ -279,9 +272,7 @@ while running:
     if satellite_on or external_orbit:
         if ptr < period-1:
                 if i < len(motion_points):
-                    print("I",motion_points[i])
                     p0 = c.transform_4d_point(motion_points[i],'vpython','ecef')
-                    print(p0)
                     (x,y,z,t1) = c.rotate_earth_tilt(p0)
                     satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
                     trail.append(satellite.get_position())

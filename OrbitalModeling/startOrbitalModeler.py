@@ -291,6 +291,13 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     
     return frame
 
+def write_tuples_to_file(tuples_array, filename):
+    with open(filename, 'w') as file:
+        for item in tuples_array:
+            #line = ','.join(map(str, item))  # Convert each element of the tuple to string and join with commas
+            file.write(str(item) + '\n')  # Write the line to the file
+
+
 # event management - Menu -> Orbiting Object -> TLE Load
 def open_tle_file_dialog():
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=(("tle files", "*.tle"),("TLE files", "*.TLE"),("All files", "*.*")))
@@ -311,14 +318,10 @@ def see_action(row,column):
         x,y,z = pos[i]
         motion_to_be_passed.append((x,y,z,t))
       
-    script_path = os.path.abspath('OrbitsVisualizer\startVisualizer.py')
-    #motion_str = ",".join([str(item) for item in motion_to_be_passed])
+    script_path = os.path.abspath('LeoFrameworkRep\OrbitsVisualizer\startVisualizer.py')
     p = mission[0].get_orbital_elements().get_period()
-    #print("INICIO",motion_str,"FIM")
-    
-    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
-        for line in enumerate(motion_to_be_passed):
-            temp_file.write(line)
+    temp_file =  tempfile.NamedTemporaryFile(delete=False)
+    write_tuples_to_file(motion_to_be_passed,temp_file.name)
        
     result = subprocess.run(["python",script_path,temp_file.name,str(p)],text=True,capture_output=True) 
     
@@ -327,7 +330,8 @@ def see_action(row,column):
     
     # Remove the temporary file
     os.unlink(temp_file.name)
-
+    os.remove(temp_file.name)
+    
 
 def del_action(row,column):
     global output, output_ptr
