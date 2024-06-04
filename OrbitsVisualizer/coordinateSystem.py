@@ -93,3 +93,11 @@ class CoordinateSystem:
             return (z,y,x,t)
         
         return points
+    
+    
+    def rotate_earth_tilt(self,point):
+        x,y,z,t = point
+        #print(point)
+        a = pi/2 - self.angle
+        return (x,y*cos(a)-(z*sin(a)),y*sin(a)+z*cos(a),t)
+                                                                              

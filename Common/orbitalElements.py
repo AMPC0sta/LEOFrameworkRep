@@ -58,6 +58,10 @@ class OrbitalElements:
         return self.tle_filename
     
     
+    def get_period(self):
+        return self.orbital_elements.period
+    
+    
     def to_show_on_widget(self):
         oe = self.orbital_elements
         utc_time = datetime.now()

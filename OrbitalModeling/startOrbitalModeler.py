@@ -5,7 +5,10 @@ from tkcalendar import *
 from widgets.datetime_picker import DateTimePicker
 from datetime import datetime,timedelta
 from pyorbital.orbital import Orbital
+
 import pandas as pd
+import subprocess
+import tempfile
 
 from missionPhaseParameters import *
 from generatedMotion import *
@@ -18,6 +21,7 @@ mission = []
 motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidVallado']
 rv_coordinates = []
 output = []
+motion_to_be_passed = []
 
 
 
@@ -297,7 +301,32 @@ def open_tle_file_dialog():
 
 
 def see_action(row,column):
-    print("Seeing (",row,",",column,")")
+    global output
+    global motion_to_be_passed,mission
+    
+    list = output[row].get_motion_list()
+    (tms,pos,vel) = zip(*list)
+    
+    for i,t in enumerate(tms):
+        x,y,z = pos[i]
+        motion_to_be_passed.append((x,y,z,t))
+      
+    script_path = os.path.abspath('OrbitsVisualizer\startVisualizer.py')
+    #motion_str = ",".join([str(item) for item in motion_to_be_passed])
+    p = mission[0].get_orbital_elements().get_period()
+    #print("INICIO",motion_str,"FIM")
+    
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
+        for line in enumerate(motion_to_be_passed):
+            temp_file.write(line)
+       
+    result = subprocess.run(["python",script_path,temp_file.name,str(p)],text=True,capture_output=True) 
+    
+    print("Standard Output:\n", result.stdout)
+    print("Standard Error:\n", result.stderr)
+    
+    # Remove the temporary file
+    os.unlink(temp_file.name)
 
 
 def del_action(row,column):

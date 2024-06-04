@@ -4,6 +4,7 @@ import datetime
 from time import *
 import sys
 import os
+import ast
 
 # Move backwards on directory tree to allow to import custom modules from others folders
 current = os.path.dirname(os.path.realpath(__file__))
@@ -28,6 +29,8 @@ tilt = 23.5
 dt = 60
 motion_points = []
 
+running = True
+
 # seconds on a day (non sidereal day)
 # 360 º anomaly state earth full rotation (day)
 day_secs = 24 * 60 * 60
@@ -40,6 +43,37 @@ start_time = None
 end_time = None
 satellite_on = False
 
+external_motion_points = []
+external_orbit = False
+
+
+if (len(sys.argv)) == 3:
+    temp_file_path = sys.argv[1]
+    period = float(sys.argv[2])
+    # Read the contents of the temporary file
+    with open(temp_file_path, "r") as temp_file:
+        motion_str = temp_file.read()
+
+    print("FIRST",motion_str)
+    # Split the contents into individual lines
+    #motion_lines = motion_str.split("\n")
+
+    # Parse each line into a tuple and create a list of tuples
+    external_motion_points = []
+    #for line in motion_lines:
+    list = ast.literal_eval(f"[{motion_str}]")
+    for p in enumerate (list):
+        #for l in enumerate(line):
+        print("point=",p,"\n")
+        x,y,z,t = p
+        external_motion_points.append((x,y,z,t))
+        #if line:
+        #    (x,y,z,t) = line
+        #    elements = line.split(",")
+            #converted_elements = [float(elem) for elem in elements]
+        #    external_motion_points.append((x,y,z,y))
+            
+    external_orbit = True
 
 # Starting graphical objects
 screen = canvas(width=(width*4/5)-50,height=height,align='left',title='<b>'+main_title+'</b>')
@@ -85,7 +119,7 @@ def manage_satellite(m):
 
     selected_satellite = m.selected
 
-    if selected_satellite != None:
+    if selected_satellite != None or external_orbit:
         satellites_db.pick_one_sat(selected_satellite)
     
         current_time = datetime.datetime.now()
@@ -98,8 +132,9 @@ def manage_satellite(m):
         motion_points = satellites_db.get_orbits(start_time,end_time)
 
         (x,y,z,t) = c.transform_4d_point(points=motion_points[0],o_system='vpython',t_system='ecef')
-        p = parameters.e_radius * vector(x,y,z)
-
+        p0 = parameters.e_radius * vector(x,y,z)
+        p = c.rotate_earth_tilt(p0)
+        
         satellite.visible = True
         satellite.set_position(pos=p)
         trail.append(p)
@@ -151,6 +186,16 @@ def manage_speed(evt):
         sim_speed = real_sim_speed
 
 
+def quit_script(evt):
+    global running
+    
+    running = False
+    
+    screen.delete()
+    print("Script terminated gracefully.")
+    
+    
+
 # Coordinates systems set and earth inclination    
 c.transform_from_vpython_to_ecef()
 earth = EarthModel(canvas=screen,radius=l)
@@ -196,6 +241,7 @@ screen.append_to_caption('Use mouse scroll wheel to zoom in/out!\n')
 screen.append_to_caption('Use mouse right button to change camera position\n')
 screen.append_to_caption('Listed satellites orbital parameters are placed on www.celestrak.org\n')
 screen.append_to_caption('it may take a while to download!\n')
+quit = button(bind=quit_script,text="Exit Program",pos=screen.caption_anchor,canvas=screen)
 
 
 # Temporal buckets (to be changed to allig with UTC, and seasonal daylight)
@@ -210,7 +256,12 @@ i = 0
 # w = v/radius --> angular velocity from linear
 # w = v * radius/radius = v rads/s --> because linear velocity is normalized 
 
-while True:
+if external_motion_points != []:
+    motion_points = external_motion_points
+    
+
+
+while running:
     rate(sim_speed)   # Allow X animation frames iteration per second
     
     if e_rotation == True:
@@ -225,11 +276,13 @@ while True:
         earth_anomaly = earth_anomaly + mag(earth.angular_velocity) * dt
         elapsed_angle_text.text= 'Earth rotation anomaly = ' + str(round(earth_anomaly*180/pi,3))  + ' º'
         
-    if satellite_on:
+    if satellite_on or external_orbit:
         if ptr < period-1:
                 if i < len(motion_points):
-                    (x,y,z,t1) = c.transform_4d_point(motion_points[i],'vpython','ecef')
-        
+                    print("I",motion_points[i])
+                    p0 = c.transform_4d_point(motion_points[i],'vpython','ecef')
+                    print(p0)
+                    (x,y,z,t1) = c.rotate_earth_tilt(p0)
                     satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
                     trail.append(satellite.get_position())
                     i = i + 1
