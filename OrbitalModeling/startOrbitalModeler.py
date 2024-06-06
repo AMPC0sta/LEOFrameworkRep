@@ -24,12 +24,9 @@ output = []
 motion_to_be_passed = []
 
 
-
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
-
-# auxiliary GUI functions
 
 # read frame title and font to backup it
 def read_frame_title(frame):
@@ -57,6 +54,7 @@ def clear_frame(frame):
         frame.title_font = f
 
 
+# auxiliary GUI functions
 def print_pair_label_value_on_frame(frame,position,label,value,font_regular,font_bold):
     pair_frame = Frame(frame)
     pair_frame.pack(side=position,fill=X, pady=2)  # Pack each pair frame vertically
@@ -142,6 +140,7 @@ def insert_mission_ops_button():
 # pop form
 def open_input_operation_parameters_form():    
 
+    # ask for tle file
     def select_tle_file():
         file_path = filedialog.askopenfilename(title="Select a TLE file", filetypes=(("TLE files", "*.tle"), ("All files", "*.*")))
         if file_path:
@@ -149,6 +148,7 @@ def open_input_operation_parameters_form():
             tle_entry.insert(0, file_path)
             popup.focus_force()
     
+    # ask for parameters 
     def get_input():
         instance_name = name_entry.get()
         tle_file = tle_entry.get()
@@ -162,6 +162,7 @@ def open_input_operation_parameters_form():
             messagebox.showerror("Input Error", "Instance Name is required.")
             return
         
+        #optional field
         if not tle_file:
             tle_file = None
             
@@ -239,18 +240,18 @@ def open_input_operation_parameters_form():
     ok_button = Button(popup, text="OK", command=get_input)
     ok_button.grid(row=5, column=0, columnspan=3, padx=5, pady=5)
 
+
 # to be used in event management (undefined events)
 def do_nothing():
     pass
 
 
+# generate a list of 4D points
 def generate_motion():
-    
     global rv_coordinates
     global output_ptr
     
     rv_coordinates = []
-    
     
     if len(mission)==1:
         orb = mission[0].get_orbital_data()
@@ -274,7 +275,6 @@ def generate_motion():
     
     create_table(table_frame, output)
 
-    
 
 # create frames with labels
 def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
@@ -291,11 +291,13 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     
     return frame
 
+# store a list of tuples, one line per node
 def write_tuples_to_file(tuples_array, filename):
     with open(filename, 'w') as file:
         for item in tuples_array:
             #line = ','.join(map(str, item))  # Convert each element of the tuple to string and join with commas
             file.write(str(item) + '\n')  # Write the line to the file
+
 
 
 # event management - Menu -> Orbiting Object -> TLE Load
@@ -306,7 +308,7 @@ def open_tle_file_dialog():
         # Add your code to handle the selected file here
 
 
-
+# 'see' buttons are being placed dinamically, if pressed
 def see_action(row,column):
     global output
     global motion_to_be_passed,mission
@@ -333,6 +335,7 @@ def see_action(row,column):
     os.remove(temp_file.name)
     
 
+# 'delete' buttons are being placed dinamically, if pressed
 def del_action(row,column):
     global output, output_ptr
     
@@ -341,6 +344,7 @@ def del_action(row,column):
     
     clear_frame(table_frame)        
     create_table(table_frame,output)
+
 
 # Function to populate the frame with a table
 def create_table(frame, output):
@@ -389,8 +393,6 @@ def create_table(frame, output):
         frame.grid_columnconfigure(j, weight=1)
         
 
-
-
 # Split screens horizontally
 screen.grid_rowconfigure(0,weight=1)
 screen.grid_rowconfigure(1,weight=40)
@@ -415,7 +417,6 @@ frame_under_r.grid_columnconfigure(0,weight=1)
 
 frame_under_right = create_frame(frame_under_r,0,0,title='Motion Propagator Parameters')
 frame_to_data_output = create_frame(frame_under_r,1,0,title='Output Dashboard:Simulation Results')
-
 
 # Draw menus
 top_menu_bar = Menu(screen)
