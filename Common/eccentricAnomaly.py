@@ -72,12 +72,14 @@ class EccentricAnomaly:
         
         return E1
         
-
+#Testing function: for ma=2.0 and e=0.1 it is expectable to have 2.0869 rads.
 def main():
     c = EccentricAnomaly(mean_anomaly=2.0,eccentricity=0.1)
     
     print("Eccentric Anomaly =", str(c.solve_eccentric_anomaly()))
-    
+
+
+#Testing  
 if __name__ == "__main__":
     main()
     
