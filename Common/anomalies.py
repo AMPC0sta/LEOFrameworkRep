@@ -5,7 +5,8 @@ class Anomalies:
     # Determine the eccentric anomaly and true anomaly of a given mean anomaly for a given eccentric and epoch
     # convergeence parameter is initiated as 10e-6 rads, but can be set in: 
     
-    # Kepler's equation M = E - e sin(E) to be solved through Newton-Rapshon iterative method.
+    # Kepler's equation: M = E - e sin(E) to be solved through Newton-Rapshon iterative method.
+    # True anomaly (v) equations: tan(v/2) = sqrt((1+e)/(1-e)) * tan(E/2)
     
     default_tolerance = 0.000001 # Tolerance set for convergeence determination in rads
     
@@ -71,12 +72,18 @@ class Anomalies:
             E1 = E0 - self.e_anomaly_kepler_equation(E0)/self.e_anomaly_kepler_equation_fst_derivative(E0)
         
         return E1
+  
+  
+    def solve_true_anomaly(self,E):
+        return 2 * atan2(sqrt(1 + self.get_eccentricity()) * sin(E / 2), sqrt(1 - self.get_eccentricity()) * cos(E / 2))
+        
         
 #Testing function: for ma=2.0 and e=0.1 it is expectable to have 2.0869 rads.
 def main():
     c = Anomalies(mean_anomaly=2.0,eccentricity=0.1)
     
     print("Eccentric Anomaly =", str(c.solve_eccentric_anomaly()))
+    print("True Anomaly = ",str(c.solve_true_anomaly(c.solve_eccentric_anomaly())))
 
 
 #Testing  
