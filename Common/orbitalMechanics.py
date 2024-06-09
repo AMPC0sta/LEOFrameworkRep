@@ -48,3 +48,12 @@ class OrbitalMechanics:
         n = ( 1 + eccentricity * cos(true_anomaly))
         
         return d/n
+    
+    
+    # coordinates of orbital plane
+    def calculate_coordinates_on_orbital_plane(self,true_anomaly,redial):
+        
+        p = redial * cos (true_anomaly)
+        q = redial * sin (true_anomaly)
+        
+        return (p,q)
