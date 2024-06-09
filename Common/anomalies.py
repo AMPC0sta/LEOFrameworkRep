@@ -1,8 +1,8 @@
 
 from math import *
 
-class EccentricAnomaly:
-    # Determine the eccentric anomaly of a given mean anomaly for a given eccentric and epoch
+class Anomalies:
+    # Determine the eccentric anomaly and true anomaly of a given mean anomaly for a given eccentric and epoch
     # convergeence parameter is initiated as 10e-6 rads, but can be set in: 
     
     # Kepler's equation M = E - e sin(E) to be solved through Newton-Rapshon iterative method.
@@ -15,7 +15,7 @@ class EccentricAnomaly:
         self.eccentricity = eccentricity
         
         if tolerance == None:
-            self.tolerance = EccentricAnomaly.default_tolerance
+            self.tolerance = Anomalies.default_tolerance
         else:
             self.tolerance = tolerance
         
@@ -74,7 +74,7 @@ class EccentricAnomaly:
         
 #Testing function: for ma=2.0 and e=0.1 it is expectable to have 2.0869 rads.
 def main():
-    c = EccentricAnomaly(mean_anomaly=2.0,eccentricity=0.1)
+    c = Anomalies(mean_anomaly=2.0,eccentricity=0.1)
     
     print("Eccentric Anomaly =", str(c.solve_eccentric_anomaly()))
 
