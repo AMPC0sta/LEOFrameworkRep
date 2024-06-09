@@ -59,7 +59,20 @@ class EccentricAnomaly:
         return E - self.e_anomaly_kepler_equation(E)/self.e_anomaly_kepler_equation_fst_derivative(E)
     
     
-    
+    def solve_eccentric_anomaly(self):
+        #eccentricity is usually near 0, for LEO's, so that Mean Anomaly is a good aproximation for starting poing 
+        
+        # starting points
+        E0 = self.get_mean_anomaly()
+        E1 = E0 - self.e_anomaly_kepler_equation(E0)/self.e_anomaly_kepler_equation_fst_derivative(E0)
+        
+        while(abs(E1-E0) > self.get_tolerance()):
+            E0 = E1
+            E1 = E0 - self.e_anomaly_kepler_equation(E0)/self.e_anomaly_kepler_equation_fst_derivative(E0)
+        
+        
+        return E1
+        
     
     
     
