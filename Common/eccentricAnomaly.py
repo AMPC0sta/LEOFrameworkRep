@@ -10,13 +10,12 @@ class EccentricAnomaly:
     default_tolerance = 0.000001 # Tolerance set for convergeence determination in rads
     
     def __init__(self,mean_anomaly,eccentricity,tolerance=None):
-        global default_tolerance
         
         self.mean_anomaly = mean_anomaly
         self.eccentricity = eccentricity
         
         if tolerance == None:
-            self.tolerance = default_tolerance
+            self.tolerance = EccentricAnomaly.default_tolerance
         else:
             self.tolerance = tolerance
         
@@ -66,13 +65,20 @@ class EccentricAnomaly:
         E0 = self.get_mean_anomaly()
         E1 = E0 - self.e_anomaly_kepler_equation(E0)/self.e_anomaly_kepler_equation_fst_derivative(E0)
         
+        # iterations
         while(abs(E1-E0) > self.get_tolerance()):
             E0 = E1
             E1 = E0 - self.e_anomaly_kepler_equation(E0)/self.e_anomaly_kepler_equation_fst_derivative(E0)
         
-        
         return E1
         
+
+def main():
+    c = EccentricAnomaly(mean_anomaly=2.0,eccentricity=0.1)
     
+    print("Eccentric Anomaly =", str(c.solve_eccentric_anomaly()))
+    
+if __name__ == "__main__":
+    main()
     
     
