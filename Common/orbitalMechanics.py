@@ -57,3 +57,12 @@ class OrbitalMechanics:
         q = redial * sin (true_anomaly)
         
         return (p,q)
+    
+    
+    def calculate_geocentric_coordinates(self,redial,raan,perigee,true_anomaly,inclination):
+        
+        x = redial * ( (cos(raan) * cos(perigee + true_anomaly)) - (sin(raan) * sin(perigee - true_anomaly) * cos(inclination) ))
+        y = redial * ( (sin(raan) * cos(perigee + true_anomaly)) - (cos(raan) * sin(perigee - true_anomaly) * cos(inclination) ))
+        z = redial * ( sin(perigee + true_anomaly)*sin(inclination))
+        
+        return (x,y,z)
