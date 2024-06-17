@@ -35,7 +35,7 @@ for _ in range(num_steps):
     ay = -mu * y / r**3
     az = -mu * z / r**3
     
-    print(ax,ay,az)
+    print(x,y,z,vx,vy,vz)
     
     # Update positions
     x += vx * dt + 0.5 * ax * dt**2
