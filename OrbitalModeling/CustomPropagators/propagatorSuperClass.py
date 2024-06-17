@@ -28,14 +28,21 @@ class PropagatorSuperClass(ABC):
     # Cartesian Position Vector (r) => (rx,ry,rz)
     # Cartesian Velocity vector(v) => (vx,vy,vz)
     
+    anomalies = None
+    default_tolerance = 0.00000001
     
     def __init__(self,M,e,O,o,i,epoch):
+        global default_tolerance, anomalies
+        
         self.M = M
         self.e = e
         self.O = O
         self.o = O
         self.i = i
         self.epoch = epoch
+        
+        anomalies = Anomalies(mean_anomaly=M,eccentricity=e,tolerance=default_tolerance)
+        self.E = anomalies.solve_eccentric_anomaly()
     
     
     @abstractmethod
