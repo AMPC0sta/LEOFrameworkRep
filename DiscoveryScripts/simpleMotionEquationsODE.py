@@ -1,7 +1,3 @@
-#from scipy.integrate import solve_ivp
-#using as initial conditions one result of simpleMotionEquations.py
-y0 = [1160.639968962924, -2004.4540552412604, 0.0, 2.9536214633011205, -1.4736710551322349, 0.0]
-
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
@@ -17,19 +13,33 @@ def satellite_motion(t, y, mu):
     az = -mu * y[2] / r**3
     return [y[3], y[4], y[5], ax, ay, az]
 
-# Initial conditions: [x0, y0, z0, vx0, vy0, vz0]
-#y0 = [7000, 0, 0, 0, 7.546, 0]
+# Initial conditions from simpleMotionEquations.py
+y0 = [1160.639968962924, -2004.4540552412604, 0.0, 2.9536214633011205, -1.4736710551322349, 0.0]
 
-# Calculate the orbital period
-r = 7000  # km
-T = 2 * np.pi * np.sqrt(r**3 / mu)  # Orbital period in seconds
+# Calculate the semi-major axis
+r0 = np.sqrt(y0[0]**2 + y0[1]**2 + y0[2]**2)
+v0 = np.sqrt(y0[3]**2 + y0[4]**2 + y0[5]**2)
+energy = 0.5 * v0**2 - mu / r0
+a = -mu / (2 * energy)  # Semi-major axis
+
+# Calculate specific angular momentum
+h_vec = np.cross(y0[:3], y0[3:])
+h = np.linalg.norm(h_vec)
+
+# Calculate eccentricity vector
+e_vec = (np.cross(y0[3:], h_vec) / mu) - (y0[:3] / r0)
+e = np.linalg.norm(e_vec)  # Eccentricity
+
+# Calculate the orbital period using the semi-major axis
+T = 2 * np.pi * np.sqrt(a**3 / mu)  # Orbital period in seconds
 print(f"Calculated Orbital Period: {T} seconds")
+print(f"Calculated Eccentricity: {e}")
 
-# Time span for the simulation
-t_span = (0, T)  # Simulate for one full orbital period
+# Time span for the simulation: let's run it for one and a half periods to observe the motion
+t_span = (0, 1.5 * T)
 
 # Solve the differential equations
-sol = solve_ivp(satellite_motion, t_span, y0, args=(mu,), method='RK45')
+sol = solve_ivp(satellite_motion, t_span, y0, args=(mu,), method='RK45', rtol=1e-9, atol=1e-12)
 
 # Plot the results
 plt.plot(sol.y[0], sol.y[1])
@@ -37,4 +47,5 @@ plt.xlabel('x [km]')
 plt.ylabel('y [km]')
 plt.title('Satellite Orbit')
 plt.axis('equal')  # Ensure the aspect ratio is equal for x and y
+plt.grid(True)
 plt.show()
