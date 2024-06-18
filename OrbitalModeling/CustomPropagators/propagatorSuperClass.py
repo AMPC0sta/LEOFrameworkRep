@@ -25,7 +25,8 @@ class PropagatorSuperClass(ABC):
     # Intermediate needed variables
     # Eccentricty Anomaly (E)
     # True Anomaly (ta)
-    # initial satellite positions in it's orbital plane
+    # Initial satellite position in it's orbital plane (cop) in format (p,q)
+    # Initial satellite position in 3D cartesian system (x0,yo,z0)
     
     # Derived Results (for initial boundaries conditions)
     # Cartesian Position Vector (r) => (rx,ry,rz)
@@ -33,9 +34,10 @@ class PropagatorSuperClass(ABC):
     
     anomalies = None
     default_tolerance = 0.00000001
+    orb_mechs = None
     
     def __init__(self,M,e,O,o,i,n,epoch):
-        global default_tolerance, anomalies
+        global default_tolerance, anomalies, orb_mechs
         
         self.M = M
         self.e = e
@@ -50,7 +52,11 @@ class PropagatorSuperClass(ABC):
         self.E = anomalies.solve_eccentric_anomaly()
         self.ta = anomalies.solve_true_anomaly()
         self.r = orb_mechs.calculate_redial_distance(eccentricity=self.e,true_anomaly=self.ta,mean_motion=n)
-        
+        self.cop = orb_mechs.calculate_coordinates_on_orbital_plane(self.ta,self.r)
+        (x,y,z) = orb_mechs.calculate_geocentric_coordinates(self.r,self.O,self.o,self.ta)
+        self.x0 = x
+        self.y0 = y
+        self.z0 = 0
     
     @abstractmethod
     def propagate():
