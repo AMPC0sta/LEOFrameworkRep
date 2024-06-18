@@ -56,7 +56,7 @@ class PropagatorSuperClass(ABC):
         (x,y,z) = orb_mechs.calculate_geocentric_coordinates(self.r,self.O,self.o,self.ta)
         self.x0 = x
         self.y0 = y
-        self.z0 = 0
+        self.z0 = z
     
     @abstractmethod
     def propagate():
