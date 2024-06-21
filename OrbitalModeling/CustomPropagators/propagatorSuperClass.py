@@ -78,7 +78,7 @@ class PropagatorSuperClass(ABC):
         self.equations_list = equations_list
         
     
-    # return orbital elements translation to ecef (useful to first orbital point convertion)
+    # return orbital elements translation to ecef (useful to first orbital point (where t=0) convertion)
     def from_oe_to_ecef(self):
         return (self.x0,self.y0,self.z0)
     
