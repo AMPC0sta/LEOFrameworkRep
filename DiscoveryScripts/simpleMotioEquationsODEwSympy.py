@@ -8,7 +8,6 @@ mu = 398600  # km^3/s^2
 
 # Define symbols for sympy
 t = sp.symbols('t')
-y = sp.Function('y')(t)
 x, y, z, vx, vy, vz = sp.symbols('x y z vx vy vz')
 
 # Define the equations symbolically
@@ -23,24 +22,30 @@ eqs = [vx, vy, vz, ax, ay, az]
 # Convert the symbolic equations to a numerical function
 f = sp.lambdify((t, [x, y, z, vx, vy, vz]), eqs, 'numpy')
 
-# Initial conditions from simpleMotionEquations.py
-y0 = [1160.639968962924, -2004.4540552412604, 0.0, 2.9536214633011205, -1.4736710551322349, 0.0]
+# Define the orbital parameters
+eccentricity = 0.000328  # Example eccentricity
+semi_major_axis = 6786  # Semi-major axis in km (earth_radius + altitude)
 
-# Calculate the semi-major axis
-earth_radius = 6378  # km
-altitude = 408  # km
-a = earth_radius + altitude  # semi-major axis in km
+# Initial conditions (position and velocity) for an elliptical orbit
+# Perigee distance (closest approach)
+r_perigee = semi_major_axis * (1 - eccentricity)
+
+# Velocity at perigee
+v_perigee = np.sqrt(mu * (1 + eccentricity) / r_perigee)
+
+# Initial conditions: start at perigee
+y0 = [r_perigee, 0, 0, 0, v_perigee, 0]
 
 # Calculate the orbital period using the semi-major axis
-T_seconds = 2 * np.pi * np.sqrt(a**3 / mu)  # Orbital period in seconds
+T_seconds = 2 * np.pi * np.sqrt(semi_major_axis**3 / mu)  # Orbital period in seconds
 T_minutes = T_seconds / 60  # Convert orbital period to minutes
 print(f"Calculated Orbital Period: {T_minutes} minutes")
 
-# Time span for the simulation: let's run it for one and a half periods to observe the motion
-t_span = (0, 1 * T_seconds)  # Time span in seconds
+# Time span for the simulation: let's run it for one period to observe the motion
+t_span = (0, T_seconds)  # Time span in seconds
 
 # Increase resolution by specifying more time points
-num_points = 5630  # Increase this number for higher resolution
+num_points = 1000  # Increase this number for higher resolution
 t_eval = np.linspace(t_span[0], t_span[1], num_points)
 
 # Define the function to pass to solve_ivp
