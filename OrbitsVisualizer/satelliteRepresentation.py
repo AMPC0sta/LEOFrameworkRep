@@ -15,7 +15,7 @@ class SatelliteRepresentation:
         self.panel2 = box(pos=vector(-1.4e3, 0, 5e2), size=vector(2e3, 0.8e3, 0.1e3), color=color.gray(0.5),canvas=self.space)
 
         # Create satellite antenna
-        self.antenna = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 2e3), radius=0.05e3, color=color.yellow,canvas=self.space)
+        self.antenna = cylinder(pos=vector(0, 0, 0), axis=vector(0, 0, 2e3), radius=0.05e3, color=color.blue,canvas=self.space)
 
 
         # Group components into a single compound object
@@ -28,7 +28,10 @@ class SatelliteRepresentation:
 
     def set_position(self,pos):
         self.pos = pos
-        self.satellite.pos = self.pos
+        sat = self.satellite
+        sat.pos = self.pos
+        self.satellite = sat
+    
         
     def set_size(self,size):
         self.size = size

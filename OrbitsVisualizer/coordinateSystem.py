@@ -96,7 +96,14 @@ class CoordinateSystem:
     
     
     def rotate_earth_tilt(self,point):
-        x,y,z,t = point
+        
+        if isinstance(point,vector):
+            x = point.x
+            y = point.y
+            z = point.z
+            t = 0
+        else:
+            (x,y,z,t) = point
         #print(point)
         a = pi/2 - self.angle
         return (x,y*cos(a)-(z*sin(a)),y*sin(a)+z*cos(a),t)

@@ -133,10 +133,11 @@ def manage_satellite(m):
 
         (x,y,z,t) = c.transform_4d_point(points=motion_points[0],o_system='vpython',t_system='ecef')
         p0 = parameters.e_radius * vector(x,y,z)
-        p = c.rotate_earth_tilt(p0)
+        (x,y,z,t) = c.rotate_earth_tilt(p0)
+        p = (x,y,x,t)
         
         satellite.visible = True
-        satellite.set_position(pos=p)
+        satellite.set_position(pos=vector(x,y,z))
         
         #satellite_1.visible = True
         #satellite_1.set_position(pos=p0)
