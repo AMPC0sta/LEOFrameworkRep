@@ -81,8 +81,15 @@ satellite = SatelliteRepresentation(space=screen)
 satellite.set_size(size=vector(500,500,500))
 satellite.visible = False
 
-trail = curve(canvas=screen,color=color.green)
 
+# satellite_1 and trail_1 were used to compare orbit with tilted and non tilted earth.
+# Tilted orbits were also comapred with SGP4 on MATLAB Aerospace Toolbox, with the same TLE and to the same time frame.
+#satellite_1 = SatelliteRepresentation(space=screen)
+#satellite_1.set_size(size=vector(500,500,500))
+#satellite_1.visible = False
+
+trail = curve(canvas=screen,color=color.green)
+#trail_1 = curve(canvas=screen,color=color.blue)
 
 # Interface control events/management
 def select_screen_size(m):
@@ -130,7 +137,11 @@ def manage_satellite(m):
         
         satellite.visible = True
         satellite.set_position(pos=p)
+        
+        #satellite_1.visible = True
+        #satellite_1.set_position(pos=p0)
         trail.append(p)
+        #trail_1.append(p0)
 
         screen.title='<b>'+main_title+' ('+selected_satellite+')</b>'
         
@@ -275,7 +286,10 @@ while running:
                     p0 = c.transform_4d_point(motion_points[i],'vpython','ecef')
                     (x,y,z,t1) = c.rotate_earth_tilt(p0)
                     satellite.set_position(pos=parameters.e_radius * vector(x,y,z))
+                    #(x0,y0,z0,t0) = p0
+                    #satellite_1.set_position(pos=parameters.e_radius * vector(x0,y0,z0))
                     trail.append(satellite.get_position())
+                    #trail_1.append(satellite_1.get_position())
                     i = i + 1
                 else:
                     i = 0

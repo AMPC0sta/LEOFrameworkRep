@@ -24,6 +24,7 @@ output = []
 motion_to_be_passed = []
 
 
+v_path = 'OrbitsVisualizer\startVisualizer.py'
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
@@ -310,7 +311,7 @@ def open_tle_file_dialog():
 
 # 'see' buttons are being placed dinamically, if pressed
 def see_action(row,column):
-    global output
+    global output,v_path
     global motion_to_be_passed,mission
     
     list = output[row].get_motion_list()
@@ -320,7 +321,7 @@ def see_action(row,column):
         x,y,z = pos[i]
         motion_to_be_passed.append((x,y,z,t))
       
-    script_path = os.path.abspath('LeoFrameworkRep\OrbitsVisualizer\startVisualizer.py')
+    script_path = os.path.abspath(v_path)
     p = mission[0].get_orbital_elements().get_period()
     temp_file =  tempfile.NamedTemporaryFile(delete=False)
     write_tuples_to_file(motion_to_be_passed,temp_file.name)
