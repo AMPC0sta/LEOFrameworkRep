@@ -1,4 +1,5 @@
 from abc import ABCMeta
+
 from propagatorSuperClass import PropagatorSuperClass
 
 class PluginPropagatorUnperturbedMotion(PropagatorSuperClass):

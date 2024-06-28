@@ -5,6 +5,8 @@ from tkcalendar import *
 from widgets.datetime_picker import DateTimePicker
 from datetime import datetime,timedelta
 from pyorbital.orbital import Orbital
+from os import *
+from importlib.util import *
 
 import pandas as pd
 import subprocess
@@ -24,7 +26,9 @@ output = []
 motion_to_be_passed = []
 
 
-v_path = 'OrbitsVisualizer\startVisualizer.py'
+base_path = getcwd() + '\\'
+v_path = base_path  + 'OrbitsVisualizer\startVisualizer.py'
+p_path = base_path +  'OrbitalModeling\propagators'
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
