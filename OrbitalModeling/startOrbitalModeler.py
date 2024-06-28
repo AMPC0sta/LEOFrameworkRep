@@ -20,7 +20,7 @@ button_index=0          #clicked button index
 output_ptr=0
 operations = []         #buttons array
 mission = []
-motion_propagators_list = ['SGP4::PyOrbital','SGP4::DavidVallado']
+motion_propagators_list = ['SGP4::Base']
 rv_coordinates = []
 output = []
 motion_to_be_passed = []
@@ -32,6 +32,31 @@ p_path = base_path +  'OrbitalModeling\propagators'
 screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
+
+def available_plugins(directory):
+    global motion_propagators_list
+    
+    files = listdir(directory)
+    
+    # Filter for files starting with "plugin" and ending with ".py"
+    plugin_files = [f for f in files if f.startswith("plugin") and f.endswith(".py")]
+    
+    for plugin_file in plugin_files:
+        # Construct the full path to the plugin file
+        plugin_path = os.path.join(directory, plugin_file)
+
+        # Load the module from the plugin file
+        spec = spec_from_file_location(plugin_file[:-3], plugin_path)
+        module = module_from_spec(spec)
+        spec.loader.exec_module(module)
+        
+        # Check if the method exists in the module and call it
+        if hasattr(module, "name_to_register_plugin"):
+            method = getattr(module, "name_to_register_plugin")
+            motion_propagators_list.append(method()+'::Plugin')
+        else:
+            print(f"The method name_to_register_plugin does not exist in {plugin_file}")
+            
 
 # read frame title and font to backup it
 def read_frame_title(frame):
