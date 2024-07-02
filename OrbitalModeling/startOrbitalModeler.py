@@ -15,6 +15,10 @@ import tempfile
 from missionPhaseParameters import *
 from generatedMotion import *
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'propagators'))
+
+from propagators.propagatorSuperClass import PropagatorSuperClass
+
 button_ptr=0            #create phase buttons auxiliary counter
 button_index=0          #clicked button index
 output_ptr=0
@@ -24,6 +28,7 @@ motion_propagators_list = ['SGP4::Base']
 rv_coordinates = []
 output = []
 motion_to_be_passed = []
+plugins_hashmap = [] # [(registering_name, plugin_class)]
 
 
 base_path = getcwd() + '\\'
@@ -34,28 +39,25 @@ screen.geometry('1600x800')
 
 
 def available_plugins(directory):
-    global motion_propagators_list
     
-    files = listdir(directory)
+    sys.path.insert(0, directory)  # Adiciona o diretório 'propagators' ao caminho de importação
     
-    # Filter for files starting with "plugin" and ending with ".py"
-    plugin_files = [f for f in files if f.startswith("plugin") and f.endswith(".py")]
-    
-    for plugin_file in plugin_files:
-        # Construct the full path to the plugin file
-        plugin_path = os.path.join(directory, plugin_file)
+    plugins = []
+    for filename in os.listdir(directory):
+        if filename.startswith("plugin") and filename.endswith(".py"):
+            plugin_path = os.path.join(directory, filename)
+            spec = spec_from_file_location("plugin_module", plugin_path)
+            plugin_module = module_from_spec(spec)
+            spec.loader.exec_module(plugin_module)
 
-        # Load the module from the plugin file
-        spec = spec_from_file_location(plugin_file[:-3], plugin_path)
-        module = module_from_spec(spec)
-        spec.loader.exec_module(module)
-        
-        # Check if the method exists in the module and call it
-        if hasattr(module, "name_to_register_plugin"):
-            method = getattr(module, "name_to_register_plugin")
-            motion_propagators_list.append(method()+'::Plugin')
-        else:
-            print(f"The method name_to_register_plugin does not exist in {plugin_file}")
+            for attr_name in dir(plugin_module):
+                attr = getattr(plugin_module, attr_name)
+                if isinstance(attr, type) and issubclass(attr, plugin_module.PropagatorSuperClass) and attr is not plugin_module.PropagatorSuperClass:
+                    #plugin_instance = attr()
+                    plugins.append(attr)
+    #print (plugins)
+    return plugins
+
             
 
 # read frame title and font to backup it
@@ -422,6 +424,18 @@ def create_table(frame, output):
     for j in range(5):
         frame.grid_columnconfigure(j, weight=1)
         
+
+#search for available propagators
+directory = os.path.join(os.path.dirname(__file__), "propagators")
+plugins= available_plugins(directory)
+
+# register plugins into an internal Hashmaps
+for plugin_cls in plugins:
+    p = plugin_cls()
+    p_name = p.name_to_register_plugin()+'::Plugin'
+    motion_propagators_list.append(p_name)
+    plugins_hashmap.append((p_name,p))
+
 
 # Split screens horizontally
 screen.grid_rowconfigure(0,weight=1)

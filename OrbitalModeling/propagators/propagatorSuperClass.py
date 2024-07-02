@@ -36,7 +36,10 @@ class PropagatorSuperClass(ABC):
     default_tolerance = 0.00000001
     orb_mechs = None
     
-    def __init__(self,satelite_name,M,e,O,o,i,n,epoch):
+    def __init__(self):
+        pass
+        
+    def init(self,satelite_name,M,e,O,o,i,n,epoch):
         global default_tolerance, anomalies, orb_mechs
         
         self.satelite_name = satelite_name
