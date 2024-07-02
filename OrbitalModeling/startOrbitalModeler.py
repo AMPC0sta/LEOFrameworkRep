@@ -38,13 +38,18 @@ screen = Tk(className=' Low Earth Orbit Calculator')
 screen.geometry('1600x800')
 
 
+# plugins are python scripts .py
+# their name shall start with plugin******.py
+# they must be classes
+# they shall inherit supper class PropagatorSuperClass
+# they must implement super class abstract methods.
 def available_plugins(directory):
     
     sys.path.insert(0, directory)  # Adiciona o diretório 'propagators' ao caminho de importação
     
     plugins = []
     for filename in os.listdir(directory):
-        if filename.startswith("plugin") and filename.endswith(".py"):
+        if filename.startswith("plugin") and filename.endswith(".py"):      # rules for plugins identification
             plugin_path = os.path.join(directory, filename)
             spec = spec_from_file_location("plugin_module", plugin_path)
             plugin_module = module_from_spec(spec)
