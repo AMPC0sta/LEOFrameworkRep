@@ -58,9 +58,8 @@ def available_plugins(directory):
             for attr_name in dir(plugin_module):
                 attr = getattr(plugin_module, attr_name)
                 if isinstance(attr, type) and issubclass(attr, plugin_module.PropagatorSuperClass) and attr is not plugin_module.PropagatorSuperClass:
-                    #plugin_instance = attr()
                     plugins.append(attr)
-    #print (plugins)
+   
     return plugins
 
             
@@ -291,24 +290,31 @@ def generate_motion():
     rv_coordinates = []
     
     if len(mission)==1:
-        orb = mission[0].get_orbital_data()
         sat_name = mission[0].get_satellite_name()
         tle_name = mission[0].get_tle_filename()
         now = datetime.now().strftime('%Y%m%d%H%M%S')
-        
+        prop = mission[0].get_motion_descriptor()
+        orb = mission[0].get_orbital_data()
+                
         time_step = timedelta(minutes=1)
         start_time = datetime.strptime(mission[0].get_start_datetime(),'%Y-%m-%d %H:%M:%S')
         current_time = start_time
         end_time = datetime.strptime(mission[0].get_end_datetime(),'%Y-%m-%d %H:%M:%S')
         
-        while current_time <= end_time:
-            pos, vel = orb.get_position(current_time)
-            rv_coordinates.append((current_time,pos,vel))
-            current_time += time_step
-            #print(current_time,pos,vel)
+        if prop.endswith('::Base'):
+            while current_time <= end_time:
+                pos, vel = orb.get_position(current_time)
+                rv_coordinates.append((current_time,pos,vel))
+                current_time += time_step
+            
+        if prop.endswith('::Plugin'):
+            print("Plugin selected")
     
-    output.append(GeneratedMotion(id="ID-"+sat_name+"."+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
-    output_ptr = output_ptr + 1
+        if rv_coordinates != []:
+            output.append(GeneratedMotion(id="ID-"+sat_name+"."+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
+            output_ptr = output_ptr + 1
+        
+        
     
     create_table(table_frame, output)
 
