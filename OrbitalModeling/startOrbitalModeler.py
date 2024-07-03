@@ -267,7 +267,7 @@ def open_input_operation_parameters_form():
 
     Label(popup, text="Motion Propagator:").grid(row=4, column=0, padx=5, pady=5, sticky="e")
     propagator_var = StringVar(value=motion_propagators_list[0])  # Default to the first option
-    propagator_combobox = ttk.Combobox(popup, textvariable=propagator_var, values=motion_propagators_list, state='readonly')
+    propagator_combobox = ttk.Combobox(popup, textvariable=propagator_var, values=motion_propagators_list, state='readonly',width=50)
     propagator_combobox.grid(row=4,column=1)
 
     popup.propagator_combobox = propagator_combobox

@@ -7,7 +7,7 @@ class PluginPropagatorUnperturbedMotion(PropagatorSuperClass):
      
     def __init__(self):
         super()
-        self.plugin_name = 'Keplerian'  
+        self.plugin_name = 'PropagatorUnperturbedMotion'  
         
 
     def name_to_register_plugin(self):

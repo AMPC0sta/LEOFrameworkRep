@@ -7,7 +7,7 @@ class PluginSimpleMotion(PropagatorSuperClass):
      
     def __init__(self):
         super()
-        self.plugin_name = 'Simple'  
+        self.plugin_name = 'SimpleMotion'  
         
 
     def name_to_register_plugin(self):
