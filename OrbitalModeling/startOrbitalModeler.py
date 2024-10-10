@@ -314,8 +314,6 @@ def generate_motion():
             output.append(GeneratedMotion(id="ID-"+sat_name+"."+now,tle_file=tle_name,start_datetime=start_time,end_datetime=end_time,motion_list=rv_coordinates))
             output_ptr = output_ptr + 1
         
-        
-    
     create_table(table_frame, output)
 
 
@@ -335,11 +333,10 @@ def create_frame(root, row, column, rowspan=1, columnspan=1, title=None):
     return frame
 
 # store a list of tuples, one line per node
-def write_tuples_to_file(tuples_array, filename):
-    with open(filename, 'w') as file:
-        for item in tuples_array:
-            #line = ','.join(map(str, item))  # Convert each element of the tuple to string and join with commas
-            file.write(str(item) + '\n')  # Write the line to the file
+def write_tuples_to_file(tuples_array, temp_file):
+    for item in tuples_array:
+        #line = ','.join(map(str, item))  # Convert each element of the tuple to string and join with commas
+        temp_file.write(str(item) + '\n')  # Write the line to the file
 
 
 
@@ -356,17 +353,19 @@ def see_action(row,column):
     global output,v_path
     global motion_to_be_passed,mission
     
+    row = int(row)
     list = output[row].get_motion_list()
     (tms,pos,vel) = zip(*list)
     
     for i,t in enumerate(tms):
         x,y,z = pos[i]
         motion_to_be_passed.append((x,y,z,t))
-      
+   
     script_path = os.path.abspath(v_path)
     p = mission[0].get_orbital_elements().get_period()
-    temp_file =  tempfile.NamedTemporaryFile(delete=False)
-    write_tuples_to_file(motion_to_be_passed,temp_file.name)
+    temp_file =  tempfile.NamedTemporaryFile(mode='w',delete=False)    # This line also openes the file for writing indeed.
+    write_tuples_to_file(motion_to_be_passed,temp_file)
+    temp_file.close()
        
     result = subprocess.run(["python",script_path,temp_file.name,str(p)],text=True,capture_output=True) 
     
@@ -429,7 +428,7 @@ def create_table(frame, output):
         button.grid(row=i+1, column=5, sticky="nsew", padx=5, pady=5)
             
         button = Button(frame, text="Delete",command=lambda i=i: del_action(i,5))
-        button.grid(row=i+1, column=6, sticky="nsew", padx=5, pady=5)
+        button.grid(row=i+1, column=6, sticky="nsew", padx=5, pady=6)
 
     # Make columns expand equally
     for j in range(5):
